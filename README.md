@@ -7,21 +7,25 @@
 ```
 cd server
 
-python3 -m venv venv
+Windows:
+python -m venv .venv
+
+Linux lub macOS:
+python3 -m venv .venv
 ```
 
 2. Aktywujemy środowisko wirtualne:
 
-- Windows:
+- Windows(Command Line - cmd):
 
 ```
-venv\Scripts\activate
+.venv\Scripts\activate.bat
 ```
 
 - Linux lub macOS:
 
 ```
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 3. **Tylko przy pierwszym uruchomieniu.** Instalujemy flaska i flask-cors:
@@ -32,6 +36,10 @@ pip3 install flask-cors
 
 4. Startujemy serwer:
 ```
+Windows:
+python server.py
+
+Linux lub macOS:
 python3 server.py
 ```
 
