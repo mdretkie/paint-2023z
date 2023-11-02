@@ -2,46 +2,26 @@
 
 ## Backend:
 
-1. Tworzymy środowisko wirtualne:
+Zakładamy, że znajdujemy się w głównym katalogu repozytorium (`paint-2023z`). Tworzymy i aktywujemy środowisko wirtualne, instalujemy nasz projekt a następnie uruchamiamy.
+
+### Windows
 
 ```
-cd server
-
-Windows:
 python -m venv .venv
-
-Linux lub macOS:
-python3 -m venv .venv
-```
-
-2. Aktywujemy środowisko wirtualne:
-
-- Windows(Command Line - cmd):
-
-```
 .venv\Scripts\activate.bat
+pip3 install -e .
+python3 server\server.py
 ```
 
-- Linux lub macOS:
+### Linux
 
 ```
-source .venv/bin/activate
+python -m venv .venv
+. .venv/bin/activate
+pip install -e .
+python server/server.py
 ```
 
-3. **Tylko przy pierwszym uruchomieniu.** Instalujemy flaska i flask-cors:
-```
-pip3 install flask
-pip3 install flask-cors
-```
-
-4. Startujemy serwer:
-```
-Windows:
-python server.py
-
-Linux lub macOS:
-python3 server.py
-```
 
 ## Frontend
 1. Żeby uruchomić potrzebny będzie Node.js. Można go pobrać tutaj: [Node.js](https://nodejs.org/en)
