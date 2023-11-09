@@ -36,3 +36,8 @@ npm install
 ```
 npm run dev
 ```
+
+# Dokumentacja:
+
+Link do Overleafa, jeśli nie chcemy trzymać dokumentacji w repo:
+https://www.overleaf.com/6521975788xjpkypgnsvrh#6bb9ef
