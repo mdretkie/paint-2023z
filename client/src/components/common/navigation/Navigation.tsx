@@ -1,7 +1,6 @@
-'use client'; //chwilowo
+'use client';
 
 import { useSearchParams } from 'next/navigation';
-import DropdownMenu from './Sidebar';
 import Logo from '../Logo';
 import NavigationLink from './NavigationLink';
 import { LogInButton } from '../buttons';
@@ -9,7 +8,7 @@ import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
 
-const links = ['Repertuar', 'Cennik', 'Filmy', 'Zapowiedzi'];
+const links = ['Repertuar', 'Cennik', 'Zapowiedzi'];
 
 export default function Navigation() {
   const searchParams = useSearchParams();
