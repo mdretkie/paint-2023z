@@ -2,7 +2,7 @@
 
 import { twMerge } from 'tailwind-merge';
 import { useSearchParams } from 'next/navigation';
-import Logo from './Logo';
+import Logo from '../Logo';
 
 interface Links {
   links: string[];
@@ -11,7 +11,7 @@ interface Links {
 export default function Sidebar({ links }: Links) {
   const searchParams = useSearchParams();
   const showSidebar = searchParams.get('sidebar') === 'true';
-  const sideMenuSpaces = ['', ...links, '', '', ''];
+  const sideMenuSpaces = ['', ...links, '', 'Logowanie', ''];
   return (
     <div className="md:hidden">
       {sideMenuSpaces.map((linkName, index) => {

@@ -1,5 +1,5 @@
 import React, { SetStateAction } from 'react';
-import { cn } from '../utils/utils';
+import { cn } from '../../utils/utils';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -10,7 +10,7 @@ export default function SidebarButton() {
 
   return (
     <Link
-      className="flex flex-col h-full aspect-square justify-center items-center bg-zinc-800"
+      className="flex flex-col h-full aspect-square justify-center items-center bg-zinc-800 md:hidden"
       href={`?sidebar=${!showSidebar}`}
     >
       <div

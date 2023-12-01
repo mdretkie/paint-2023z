@@ -2,10 +2,10 @@
 
 import { useSearchParams } from 'next/navigation';
 import DropdownMenu from './Sidebar';
-import Logo from './Logo';
+import Logo from '../Logo';
 import NavigationLink from './NavigationLink';
-import { LogInButton } from './buttons';
-import { cn } from '../utils/utils';
+import { LogInButton } from '../buttons';
+import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
 
@@ -19,7 +19,7 @@ export default function Navigation() {
       <div className="max-w-[1040px] m-auto h-20 flex items-center justify-between px-4 md:px-8">
         <div
           className={cn(
-            'pl-4 w-full h-20 fixed flex items-center justify-between md:gap-8 transition-all ease-in-out duration-300',
+            'pl-4 w-full h-20 fixed flex items-center justify-between md:gap-8 transition-all ease-in-out duration-300 md:static md:pl-0 md:justify-start',
             showSidebar ? '-left-2/3' : 'left-0 delay-700'
           )}
         >
