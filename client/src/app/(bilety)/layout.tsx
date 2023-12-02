@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Roboto, Black_Han_Sans } from 'next/font/google';
 import 'material-symbols';
-import './globals.css';
-import Navigation from '@/components/common/navigation/Navigation';
+import '../globals.css';
+import { FormProvider } from '@/components/providers/FormContext';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -15,8 +15,8 @@ const black_han_sans = Black_Han_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Kino',
-  description: 'To jest aplikacja internetowa kina.',
+  title: 'Formularz Kupowania Biletów',
+  description: 'To jest formularz kupowania biletów dla aplikacji kina.',
 };
 
 export default function RootLayout({
@@ -26,9 +26,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} ${black_han_sans.variable}`}>
-        <Navigation />
-        {children}
+      <body
+        className={`${roboto.className} ${black_han_sans.variable} bg-zinc-900`}
+      >
+        <FormProvider>{children}</FormProvider>
       </body>
     </html>
   );
