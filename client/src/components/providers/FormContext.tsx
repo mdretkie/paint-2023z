@@ -26,7 +26,12 @@ const FormContext = createContext<IFormContext>({
 });
 
 export function FormProvider({ children }: { children: ReactNode }) {
-  let [formData, setFormData] = useState({});
+  let [formData, setFormData] = useState({
+    type: {
+      reduced: 0,
+      normal: 0,
+    },
+  });
   let [step, setStep] = useState(1);
 
   function handleNext() {
