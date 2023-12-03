@@ -84,6 +84,7 @@ function TicketInput({ type, label, value, onUpdate }: TicketInputProps) {
         <input
           type="text"
           value={value}
+          readOnly={true}
           className="bg-zinc-800 w-16 text-center text-xl font-medium outline-none"
         />
         <div
