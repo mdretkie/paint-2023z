@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} ${black_han_sans.variable} bg-zinc-900`}
+        className={`${roboto.className} ${black_han_sans.variable} bg-zinc-900 h-full`}
       >
         <FormProvider>{children}</FormProvider>
       </body>
