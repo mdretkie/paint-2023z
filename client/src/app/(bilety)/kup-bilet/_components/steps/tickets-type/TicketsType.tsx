@@ -12,14 +12,18 @@ interface TicketInputProps {
 
 export default function TicketsType() {
   const { formData, setFormData, handleNext } = useFormState();
-  const [reducedTicketNumber, setReducedTicketNumber] = useState(0);
-  const [normalTicketNumber, setNormalTicketNumber] = useState(0);
+  const [reducedTicketNumber, setReducedTicketNumber] = useState(
+    formData.type.reduced
+  );
+  const [normalTicketNumber, setNormalTicketNumber] = useState(
+    formData.type.normal
+  );
 
   const updateTicketNumber = (type: string, increment: number) => {
     if (type === 'normalny') {
-      setNormalTicketNumber((prev) => Math.max(0, prev + increment));
+      setNormalTicketNumber((prev: number) => Math.max(0, prev + increment));
     } else if (type === 'ulgowy') {
-      setReducedTicketNumber((prev) => Math.max(0, prev + increment));
+      setReducedTicketNumber((prev: number) => Math.max(0, prev + increment));
     }
   };
 
@@ -59,7 +63,10 @@ export default function TicketsType() {
             onUpdate={updateTicketNumber}
           />
         </div>
-        <SubmitButton text={'Dalej'} />
+        <SubmitButton
+          text={'Dalej'}
+          disabled={!(reducedTicketNumber + normalTicketNumber > 0)}
+        />
       </form>
     </div>
   );

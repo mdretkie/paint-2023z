@@ -86,10 +86,10 @@ export default function PersonalData() {
   const { formData, setFormData, handleNext } = useFormState();
 
   const initialValues = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    email: formData.email,
+    phone: formData.phone,
   };
 
   const handleSubmit = (values: any) => {

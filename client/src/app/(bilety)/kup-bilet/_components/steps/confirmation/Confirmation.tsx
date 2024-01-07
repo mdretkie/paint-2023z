@@ -32,10 +32,10 @@ export default function Confirmation() {
           Bilety Zaklepane! <br />
           Czas na Filmową Magię!
         </div>
-        <div className="text-xl text-center text-zinc-50">
+        <div className="text-md text-center text-zinc-50">
           Dziękujemy za skorzystanie z naszych usług! Proces zakupu biletów
-          zakończony sukcesem. Bilety zostały przesłane na Twój adres e-mail.
-          Życzymy udanego seansu!
+          zakończony sukcesem. Bilety zostały przesłane na{' '}
+          <em>Twój adres e-mail</em>. Życzymy udanego seansu!
         </div>
         <Link
           href={'/'}

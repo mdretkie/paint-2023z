@@ -8,7 +8,7 @@ import { useSeats } from './_components/hooks/useSeats';
 import { useFormState } from '@/components/providers/FormContext';
 
 export default function Seats() {
-  const { handleNext } = useFormState();
+  const { formData, handleNext } = useFormState();
   const { seatsData, totalTickets, totalSelected, handleSeatClick } = useSeats({
     1: [
       { number: 1, available: false, selected: false },
@@ -94,7 +94,10 @@ export default function Seats() {
         <Legend />
         <div className="flex justify-between">
           <BackButton text={'Powrót'} />
-          <SubmitButton text={'Dalej'} />
+          <SubmitButton
+            text={'Dalej'}
+            disabled={formData.seats.length !== totalTickets}
+          />
         </div>
       </form>
     </div>

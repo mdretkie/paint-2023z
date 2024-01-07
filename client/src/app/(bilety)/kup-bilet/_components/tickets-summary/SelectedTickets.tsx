@@ -26,8 +26,11 @@ export default function SelectedTickets() {
     >
       {formData.seats?.map((seat: Seat) => {
         return (
-          <div key={seat.number}>
-            Rząd {seat.row}, Miejsce {seat.number}
+          <div className="flex justify-between">
+            <div key={seat.number}>
+              Rząd {seat.row}, Miejsce {seat.number}
+            </div>
+            <div>24.90zł</div>
           </div>
         );
       })}
