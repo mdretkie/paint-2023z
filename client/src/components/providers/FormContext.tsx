@@ -31,6 +31,11 @@ export function FormProvider({ children }: { children: ReactNode }) {
       reduced: 0,
       normal: 0,
     },
+    seats: [],
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
   });
   let [step, setStep] = useState(1);
 

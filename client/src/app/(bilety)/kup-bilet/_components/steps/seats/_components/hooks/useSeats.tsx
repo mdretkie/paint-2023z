@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SeatsData } from '../../_lib/types';
+import { Seat, SeatsData } from '../../_lib/types';
 import { useFormState } from '@/components/providers/FormContext';
 
 const countSelected = (seatsData: SeatsData) => {
@@ -18,7 +18,7 @@ const countSelected = (seatsData: SeatsData) => {
 };
 
 export function useSeats(initialSeatsData: SeatsData) {
-  const { formData } = useFormState();
+  const { formData, setFormData } = useFormState();
   let [seatsData, setSeatsData] = useState(initialSeatsData);
   let [totalSelected, setTotalSelected] = useState(countSelected(seatsData));
   const totalTickets = formData.type.normal + formData.type.reduced;
@@ -34,6 +34,20 @@ export function useSeats(initialSeatsData: SeatsData) {
 
       setSeatsData(updatedSeatsData);
       setTotalSelected(countSelected(updatedSeatsData));
+
+      const selectedSeats = Object.entries(seatsData).flatMap(
+        ([row, seatRow]) =>
+          seatRow
+            .filter((seat: Seat) => seat.selected)
+            .map((seat: Seat) => ({ row, ...seat }))
+      );
+
+      const updatedSeats = {
+        ...formData,
+        seats: selectedSeats,
+      };
+
+      setFormData(updatedSeats);
     } else {
       alert('Wszystkie miejsca zostały wybrane.');
     }

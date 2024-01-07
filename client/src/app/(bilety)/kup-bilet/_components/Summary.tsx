@@ -1,8 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import SelectedTickets from './tickets-summary/SelectedTickets';
 
 export default function Summary() {
   return (
-    <div className="text-zinc-50">
+    <div className="text-zinc-50 h-full relative flex flex-col">
       <div className="flex items-center gap-4">
         <span className="material-symbols-outlined text-5xl">
           calendar_today
@@ -21,6 +24,7 @@ export default function Summary() {
         </div>
         <div className="lowercase text-xl text-zinc-300">horror/przygodowy</div>
       </div>
+      <SelectedTickets />
     </div>
   );
 }

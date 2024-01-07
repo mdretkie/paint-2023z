@@ -73,7 +73,7 @@ export default function Seats() {
       <SeatsSelectionInfo total={totalTickets} selected={totalSelected} />
       <form
         onSubmit={handleSubmit}
-        className="flex-grow flex flex-col justify-between"
+        className="flex-1 h-full flex flex-col justify-between"
       >
         <div>
           <Screen />

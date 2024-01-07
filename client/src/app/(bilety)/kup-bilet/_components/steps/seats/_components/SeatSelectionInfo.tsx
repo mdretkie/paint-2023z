@@ -7,7 +7,7 @@ export default function SeatsSelectionInfo({
 }) {
   let diff = total - selected;
   return (
-    <div className="text-sm my-4">
+    <div className="text-sm">
       {diff !== 0 ? (
         <span>
           Pozostał{diff > 1 ? 'y' : 'o'}{' '}
