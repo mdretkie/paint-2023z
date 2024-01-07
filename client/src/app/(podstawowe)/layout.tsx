@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Roboto, Black_Han_Sans } from 'next/font/google';
 import 'material-symbols';
-import './globals.css';
+import '../globals.css';
 import Navigation from '@/components/common/navigation/Navigation';
 
 const roboto = Roboto({
