@@ -1,15 +1,27 @@
-export default function Home() {
-  // const [message, setMessage] = useState('Loading...');
+import type { NextPage } from "next";
 
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:8080/api/home')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setMessage(data.message);
-  //     });
-  // });
-  return(
+const StronaGwnaDesktop: NextPage = () => {
+  return (
     <div className="relative bg-extended-gray-900 w-full h-[1828px] overflow-hidden text-left text-base text-default-white font-roboto">
+      <div className="absolute top-[1504px] left-[1px] bg-extended-true-gray-800 w-full h-[324px]" />
+      <div className="absolute top-[1608px] left-[565px] w-[87px] h-28 font-inter">
+        <div className="absolute top-[0px] left-[0px]">Repertuar</div>
+        <div className="absolute top-[31px] left-[0px]">Cennik</div>
+        <div className="absolute top-[62px] left-[0px]">Filmy</div>
+        <div className="absolute top-[93px] left-[0px]">Zapowiedzi</div>
+      </div>
+      <div className="absolute top-[1608px] left-[809px] w-[163px] h-[138px] font-inter">
+        <div className="absolute top-[0px] left-[0px]">kontakt@cinema.com</div>
+        <div className="absolute top-[31px] left-[0px]">
+          <p className="m-0">Telefon:</p>
+          <p className="m-0">+48 123 456 789</p>
+        </div>
+        <div className="absolute top-[81px] left-[0px]">
+          <p className="m-0">Adres:</p>
+          <p className="m-0">{`Pl. Politechniki 1, `}</p>
+          <p className="m-0">00-661 Warszawa</p>
+        </div>
+      </div>
       <b className="absolute top-[640px] left-[200px] text-17xl text-extended-orange-500">
         Repertuar
       </b>
@@ -22,8 +34,16 @@ export default function Home() {
         alt=""
         src="/movie.svg"
       />
+      <div className="absolute top-[1569px] left-[243px] w-[999px] h-10 text-5xl font-inter">
+        <div className="absolute top-[0px] left-[0px] text-13xl font-black-han-sans text-extended-orange-500">
+          CINEMA
+        </div>
+        <b className="absolute top-[5.5px] left-[321.67px]">Kino</b>
+        <b className="absolute top-[5.5px] left-[566.33px]">Kontakt</b>
+        <b className="absolute top-[5.5px] left-[849px]">Social Media</b>
+      </div>
       <img
-        className="absolute top-[80px] left-[0] w-full h-[512px] object-cover"
+        className="absolute top-[80px] left-[calc(50%_-_1313px)] w-[2626px] h-[512px] object-cover"
         alt=""
         src="/carousel-image@2x.png"
       />
@@ -50,7 +70,7 @@ export default function Home() {
         alt=""
         src="/calendar-today.svg"
       />
-      <div className="absolute top-[781.5px] left-[198.5px] box-border w-[1043px] h-[3px] border-t-[3px] border-solid border-extended-gray-500" />
+      <div className="absolute top-[781.5px] left-[198.5px] box-border w-[1043px] h-[3px] border-t-[1px] border-solid border-extended-gray-500" />
       <div className="absolute top-[752px] left-[216px] font-medium">Filmy</div>
       <div className="absolute top-[752px] left-[736px] font-medium">
         do południa
@@ -252,6 +272,53 @@ export default function Home() {
       <div className="absolute top-[1423px] left-[1001px] text-sm text-default-gray-400">
         10 Listopada 2023
       </div>
+      <div className="absolute top-[1609px] left-[1092px] w-24 h-6">
+        <img
+          className="absolute top-[0px] left-[0px] w-6 h-6 overflow-hidden"
+          alt=""
+          src="/iconfacebook-1.svg"
+        />
+        <img
+          className="absolute top-[0px] left-[36px] w-6 h-6 overflow-hidden"
+          alt=""
+          src="/iconinstagram-1.svg"
+        />
+        <img
+          className="absolute top-[1.8px] left-[72px] w-6 h-[20.4px] overflow-hidden"
+          alt=""
+          src="/icontwitter-1.svg"
+        />
+      </div>
+      <div className="absolute top-[0px] left-[200px] w-[1040px] h-20">
+        <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] bg-extended-gray-900" />
+        <img
+          className="absolute h-[45%] w-[3.46%] top-[25%] right-[96.54%] bottom-[30%] left-[0%] max-w-full overflow-hidden max-h-full"
+          alt=""
+          src="/movie.svg"
+        />
+        <div className="absolute top-[26.25%] left-[4.13%] text-13xl font-black-han-sans text-extended-orange-500">
+          CINEMA
+        </div>
+        <div className="absolute top-[23px] left-[206px] w-[387px] h-[31px]">
+          <div className="absolute top-[0px] left-[0px] rounded-md bg-extended-gray-900 overflow-hidden flex flex-row items-center justify-center py-1.5 px-3">
+            <div className="relative font-medium">Repertuar</div>
+          </div>
+          <div className="absolute top-[0px] left-[111px] rounded-md bg-extended-gray-900 overflow-hidden flex flex-row items-center justify-center py-1.5 px-3">
+            <div className="relative font-medium">Cennik</div>
+          </div>
+          <div className="absolute top-[0px] left-[201px] rounded-md bg-extended-gray-900 overflow-hidden flex flex-row items-center justify-center py-1.5 px-3">
+            <div className="relative font-medium">Filmy</div>
+          </div>
+          <div className="absolute top-[0px] left-[280px] rounded-md bg-extended-gray-900 overflow-hidden flex flex-row items-center justify-center py-1.5 px-3">
+            <div className="relative font-medium">Zapowiedzi</div>
+          </div>
+        </div>
+        <div className="absolute h-[53.75%] w-[10.58%] top-[23.75%] right-[0%] bottom-[22.5%] left-[89.42%] rounded-md bg-extended-gray-800 overflow-hidden flex flex-row items-center justify-center py-3 px-4 box-border">
+          <div className="relative font-medium">Logowanie</div>
+        </div>
+      </div>
     </div>
-  );;
-}
+  );
+};
+
+export default StronaGwnaDesktop;
