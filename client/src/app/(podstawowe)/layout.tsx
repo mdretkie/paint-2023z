@@ -3,6 +3,7 @@ import { Roboto, Black_Han_Sans } from 'next/font/google';
 import 'material-symbols';
 import '../globals.css';
 import Navigation from '@/components/common/navigation/Navigation';
+import Footer from '@/components/common/footer/Footer';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body className={`${roboto.className} ${black_han_sans.variable}`}>
         <Navigation />
         {children}
+        <Footer />
       </body>
     </html>
   );
