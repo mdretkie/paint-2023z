@@ -43,7 +43,7 @@ export default function Blik() {
       className="flex-1 flex flex-col justify-between"
       onSubmit={formik.handleSubmit}
     >
-      <div className="flex-1 flex items-cente">
+      <div className="flex-1 flex items-center">
         <div className="flex items-center gap-4 relative">
           <div className="text-zinc-50">kod BLIK: </div>
           <input
