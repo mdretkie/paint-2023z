@@ -1,7 +1,9 @@
 from typing import Any
 from flask import Blueprint, session, redirect, url_for, request
-from paint.server.filmy import filmy
-from paint.server.auth import auth
+#from paint.server.filmy import filmy
+#from paint.server.auth import auth
+from server import Bilet, saveEntryToDatabase
+
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -70,6 +72,8 @@ def seats() -> Any:
 def buyer_data() -> Any:
     data = {k: request.form.get(k) 
             for k in ["imię", "nazwisko", "e-mail", "telefon"]}
+    data1 = request.get_json()
+    saveEntryToDatabase(data1)
 
     return {
         "success": True,
