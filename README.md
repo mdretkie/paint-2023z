@@ -36,7 +36,10 @@ npm install
 ```
 npm run dev
 ```
-
+4. Wyświetlenie zawartości bazy danych:
+```
+python sql.py
+```
 # Dokumentacja:
 
 Link do Overleafa, jeśli nie chcemy trzymać dokumentacji w repo:  
