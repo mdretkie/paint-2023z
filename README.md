@@ -41,7 +41,7 @@ Pobranie niezbędnej biblioteki:
 ```
 pip install Flask-SQLAlchemy
 ```
-Wyświetlenie zawartości bazy danych:
+Wyświetlenie zawartości bazy danych (zakładając, że jesteśmy w katalogu `paint-2023z/server`):
 ```
 python sql.py
 ```
