@@ -2,10 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app import Bilet 
+from paint.server.common import Bilet
 
 def displayDatabase():
-    engine = create_engine('sqlite:///instance/example.db')
+    engine = create_engine('sqlite:///../instance/example.db')
     Session = sessionmaker(bind=engine)
     session = Session()
     bilety = session.query(Bilet).all()
