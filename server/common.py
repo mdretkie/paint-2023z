@@ -9,7 +9,7 @@ class Bilet(db.Model):
     imie = db.Column(db.String(50), nullable=False)
     nazwisko = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    telefon = db.Column(db.String(50), nullable=False)
+    telefon = db.Column(db.String(50), nullable=True)
     def __init__(self, rodzaj_biletu, miejsce, imie, nazwisko, email, telefon):
         self.rodzaj_biletu = rodzaj_biletu
         self.miejsce = miejsce
@@ -17,6 +17,7 @@ class Bilet(db.Model):
         self.nazwisko = nazwisko
         self.email = email
         self.telefon = telefon
+
 
 def saveEntryToDatabase(data)->None:
     rodzaj_biletu = data['rodzaj_biletu']
