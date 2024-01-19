@@ -1,6 +1,60 @@
+import { useFormState } from '@/components/providers/FormContext';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function Confirmation() {
+  const { formData } = useFormState();
+
+  useEffect(() => {
+    // const postData = async () => {
+    //   try {
+    //     const response = await fetch('http://127.0.0.1:8080/api/buyer-data', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         'Origin': 'http://localhost:3000',
+    //       },
+    //       body: JSON.stringify({
+    //         rodzaj_biletu: 'ulgowy',
+    //         miejsce: 'I1',
+    //         imie: 'Jan',
+    //         nazwisko: 'Kowalski',
+    //         email: 'jan.k@gmail.com',
+    //         telefon: '123456789',
+    //       }),
+    //     });
+    //     if (response.ok) {
+    //       console.log('POST request successful');
+    //     } else {
+    //       console.log('POST request failed');
+    //     }
+    //   } catch (error) {
+    //     console.log('Error:', error);
+    //   }
+    // };
+
+    // postData();
+    fetch('http://127.0.0.1:8080/api/buyer-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        rodzaj_biletu: 'ulgowy',
+        miejsce: 'I1',
+        imie: 'Jan',
+        nazwisko: 'Kowalski',
+        email: 'jan.k@gmail.com',
+        telefon: '123456789',
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+        console.log(data.data);
+      });
+  }, []);
+
   return (
     <div className="flex items-center h-full">
       <div className="flex flex-col items-center gap-4">
