@@ -17,7 +17,7 @@ export default function Navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8080/is_logged_in', {
+    fetch('http://127.0.0.1:8080/auth/is_logged_in', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -1,10 +1,11 @@
 from typing import Any
 from flask import Blueprint, request, jsonify
-from paint.server.common import saveEntryToDatabase, db
-from paint.server.seats import all_seats
 from datetime import datetime, timedelta
+from paint.server.common import saveEntryToDatabase
+from paint.server.seats import all_seats
 
 api = Blueprint("api", __name__, url_prefix="/api")
+
 
 @api.route("/repertuar", methods=["GET"])
 def home() -> Any:
@@ -40,7 +41,8 @@ def films(date: str) -> Any:
         },
     ]
 
-    films_with_date = [film for film in films if date in film["dates"].split(", ")]
+    films_with_date = [
+        film for film in films if date in film["dates"].split(", ")]
 
     return jsonify(films_with_date)
 
@@ -124,6 +126,7 @@ def payment() -> Any:
     return {
         "success": True,
     }
+
 
 @api.route("/user/<int:id>", methods=["GET", "POST"])
 def user(id: int) -> Any:
