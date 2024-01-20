@@ -12,7 +12,8 @@ class Bilet(db.Model):
     email = db.Column(db.String(50), nullable=False)
     telefon = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, rodzaj_biletu, miejsce, imie, nazwisko, email, telefon):
+    def __init__(self, id, rodzaj_biletu, miejsce, imie, nazwisko, email, telefon):
+        self.id = id
         self.rodzaj_biletu = rodzaj_biletu
         self.miejsce = miejsce
         self.imie = imie
@@ -28,7 +29,8 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False)
     telefon = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, rodzaj_biletu, miejsce, imie, nazwisko, email, telefon):
+    def __init__(self, id, imie, nazwisko, email, telefon):
+        self.id = id
         self.imie = imie
         self.nazwisko = nazwisko
         self.email = email
@@ -41,7 +43,8 @@ class Miejsce(db.Model):
     numer_miejsca = db.Column(db.Integer, nullable=False)
     czy_dostepne = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, rzad, numer_miejsca, czy_dostepne):
+    def __init__(self, id, rzad, numer_miejsca, czy_dostepne):
+        self.id = id
         self.rzad = rzad
         self.numer_miejsca = numer_miejsca
         self.czy_dostepne = czy_dostepne
