@@ -1,38 +1,33 @@
 from typing import Any
-from flask import Blueprint, session, redirect, url_for, request
+from flask import Blueprint, session, request, jsonify
 from paint.server.common import saveEntryToDatabase
 from paint.server.seats import all_seats
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
 
-@api.route("/home", methods=["GET"])
-def home() -> Any:
-    return [
-        {
-            "plakat": "...",
-            "tytuł": "...",
-            "typ": "...",
-            "minimalny wiek": "...",
-            "czas trwania": "...",
-            "produkcja": "...",
-            "dostępne godziny seansów": "...",
-        },
-        {
-            "plakat": "...",
-            "tytuł": "...",
-            "typ": "...",
-            "minimalny wiek": "...",
-            "czas trwania": "...",
-            "produkcja": "...",
-            "dostępne godziny seansów": "...",
-        },
-    ]
-
-
 @api.route("/repertuar", methods=["GET"])
-def repertuar() -> Any:
-    return redirect(url_for("api.home"))
+def home() -> Any:
+    films = [{
+        "id": 1,
+        "poster": "...",
+        "title": "Chłopi",
+        "type": "...",
+        "age": "...",
+        "duration": "...",
+        "production": "...",
+        "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+    }, {
+        "id": 2,
+        "poster": "...",
+        "title": "Chłopi 2",
+        "type": "...",
+        "age": "...",
+        "duration": "...",
+        "production": "...",
+        "availableHours": "12:00, 14:00, 16:00, 18:00, 20:00",
+    }]
+    return jsonify(films)
 
 
 @api.route("/cennik", methods=["GET"])
@@ -47,15 +42,30 @@ def cennik() -> Any:
 
 @api.route("/film/<int:id>", methods=["GET"])
 def film(id: int) -> Any:
-    return {
-        "plakat": "...",
-        "tytuł": "...",
-        "typ": "...",
-        "minimalny wiek": "...",
-        "czas trwania": "...",
-        "produkcja": "...",
-        "dostępne godziny seansów": "...",
-    }
+    films = [{
+        "id": 1,
+        "poster": "...",
+        "title": "Chłopi",
+        "type": "...",
+        "age": "...",
+        "duration": "...",
+        "production": "...",
+        "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+    }, {
+        "id": 2,
+        "poster": "...",
+        "title": "Chłopi 2",
+        "type": "...",
+        "age": "...",
+        "duration": "...",
+        "production": "...",
+        "availableHours": "12:00, 14:00, 16:00, 18:00, 20:00",
+    }]
+    for film in films:
+        if film["id"] == id:
+            return jsonify(film)
+    
+    return jsonify({"error": "Film not found"})
 
 
 @api.route("/seats", methods=["GET", "PUT"])

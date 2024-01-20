@@ -17,11 +17,12 @@ export default function buyTicket({
       <ProgressBar />
       <div className="w-full flex gap-5">
         <Container>
-          <Summary date={date} />
+          <Summary date={date} id={params.id} />
         </Container>
         <Container>
           <ActiveStep />
         </Container>
+        d
       </div>
     </div>
   );

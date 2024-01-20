@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
 from paint.server.api import api
 from paint.server.common import db

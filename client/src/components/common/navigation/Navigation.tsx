@@ -8,7 +8,7 @@ import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
 
-const links = ['Repertuar', 'Cennik', 'Zapowiedzi'];
+const links = ['Repertuar', 'Cennik'];
 
 export default function Navigation() {
   const searchParams = useSearchParams();
