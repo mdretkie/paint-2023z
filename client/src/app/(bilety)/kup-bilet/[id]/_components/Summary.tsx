@@ -2,9 +2,26 @@
 
 import Link from 'next/link';
 import SelectedTickets from './tickets-summary/SelectedTickets';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function Summary({ date }: { date: string }) {
+export default function Summary({ date, id }: { date: string; id: string }) {
+  const [movie, setMovie] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:8080/api/film/${id}`);
+        const data = await response.json();
+        console.log(data);
+        setMovie(data);
+      } catch (error) {
+        console.error('Error fetching movie:', error);
+      }
+    };
+
+    fetchMovie();
+  }, [id]);
+
   const year = date.slice(0, 4);
   const month = date.slice(5, 7);
   const day = date.slice(8, 10);
@@ -40,9 +57,11 @@ export default function Summary({ date }: { date: string }) {
       <div className="h-px my-6 bg-zinc-600"></div>
       <div>
         <div className="uppercase text-3xl font-bold">
-          PIĘĆ KOSZMARNYCH NOCY 2D / NAPISY
+          {movie ? movie.title : 'Ładowanie...'}
         </div>
-        <div className="lowercase text-xl text-zinc-300">horror/przygodowy</div>
+        <div className="lowercase text-xl text-zinc-300">
+          {movie ? movie.type : 'Ładowanie...'}
+        </div>
       </div>
       <SelectedTickets />
     </div>
