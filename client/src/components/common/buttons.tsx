@@ -31,7 +31,7 @@ export function SubmitButton({
 }
 
 export function BackButton({ text }: { text: string }) {
-  const { handleBack } = useFormState();
+  const { formData, handleBack } = useFormState();
   const { step } = useFormState();
   return (
     <button
@@ -42,6 +42,21 @@ export function BackButton({ text }: { text: string }) {
           confirmation = confirm(
             'Powrtót od poprzedniego kroku spowoduje utratę wybranych miejsc. Czy na pewno chcesz wrócić?'
           );
+
+          const seatsJson = JSON.stringify(formData.seats);
+
+          fetch('http://127.0.0.1:8080/api/seats', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: seatsJson,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('Response:', data);
+            })
+            .catch((error) => console.error('Error:', error));
         }
         if (!confirmation && confirmation != null) return;
         handleBack();
