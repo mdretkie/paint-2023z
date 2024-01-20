@@ -26,7 +26,7 @@ export default function Carousel() {
   return (
     <div className="carousel h-[512px] relative">
       <img
-        className="object-cover w-full h-full animate-fade-in"
+        className="object-cover w-full h-full"
         src={images[currentImageIndex]}
         alt="Carousel Image"
       />
