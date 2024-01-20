@@ -2,15 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import Heading from '../_components/Heading';
+import { useLogInState } from '@/components/providers/LogInContext';
 
 export default function User() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useLogInState();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
     fetch('http://127.0.0.1:8080/auth/is_logged_in', {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -28,7 +35,7 @@ export default function User() {
   }, []);
 
   if (!isLoggedIn) {
-    return <div>Please log in to view this page.</div>;
+    return <div className="text-white">Please log in to view this page.</div>;
   }
 
   return (

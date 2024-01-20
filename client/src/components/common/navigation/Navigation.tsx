@@ -7,35 +7,14 @@ import { LogInButton, LogOutButton } from '../buttons';
 import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
-import { useEffect, useState } from 'react';
+import { useLogInState } from '@/components/providers/LogInContext';
 
 const links = ['Repertuar', 'Cennik'];
 
 export default function Navigation() {
   const searchParams = useSearchParams();
   const showSidebar = searchParams.get('sidebar') === 'true';
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:8080/auth/is_logged_in', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
-        }
-        return response.json();
-      })
-      .then((data) => console.log(data))
-      .catch((error) => {
-        console.error('There was an error!', error);
-      });
-  }, []);
+  const { isLoggedIn } = useLogInState();
 
   return (
     <>

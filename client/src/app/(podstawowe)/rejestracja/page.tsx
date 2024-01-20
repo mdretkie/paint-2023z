@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,10 +20,10 @@ export default function Register() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log('logged in');
-        // Redirect to login page
+        console.info(data.message);
+        router.push('/logowanie');
       } else {
-        console.log(data.message);
+        console.warn(data.message);
       }
     } catch (error) {
       console.error('Error:', error);

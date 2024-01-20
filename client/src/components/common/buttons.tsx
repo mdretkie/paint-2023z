@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useFormState } from '../providers/FormContext';
+import { useLogInState } from '../providers/LogInContext';
 
 export function LogInButton() {
   return (
@@ -13,8 +14,11 @@ export function LogInButton() {
 }
 
 export function LogOutButton() {
+  const { setIsLoggedIn } = useLogInState();
+
   const handleLogout = () => {
     localStorage.removeItem('token');
+    setIsLoggedIn(false);
   };
   return (
     <button

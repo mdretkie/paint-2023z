@@ -1,8 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function Logowanie() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,8 +21,8 @@ export default function Logowanie() {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.access_token);
+        router.push('/user');
         console.log(data.message);
-        // Redirect to the user page
       } else {
         console.log(data.message);
       }
