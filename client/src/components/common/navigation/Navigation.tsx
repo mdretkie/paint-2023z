@@ -3,16 +3,40 @@
 import { useSearchParams } from 'next/navigation';
 import Logo from '../Logo';
 import NavigationLink from './NavigationLink';
-import { LogInButton } from '../buttons';
+import { LogInButton, LogOutButton } from '../buttons';
 import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
+import { useEffect, useState } from 'react';
 
 const links = ['Repertuar', 'Cennik'];
 
 export default function Navigation() {
   const searchParams = useSearchParams();
   const showSidebar = searchParams.get('sidebar') === 'true';
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8080/is_logged_in', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+        return response.json();
+      })
+      .then((data) => console.log(data))
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
+  }, []);
+
   return (
     <>
       <div className="w-full bg-zinc-900">
@@ -35,7 +59,7 @@ export default function Navigation() {
             <Sidebar links={links} />
           </div>
           <div className="hidden md:block">
-            <LogInButton />
+            {isLoggedIn ? <LogOutButton /> : <LogInButton />}
           </div>
         </div>
       </div>

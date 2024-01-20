@@ -9,7 +9,7 @@ export default function Logowanie() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:8080/api/login', {
+      const response = await fetch('http://127.0.0.1:8080/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -17,7 +17,13 @@ export default function Logowanie() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      localStorage.setItem('token', data.access_token);
+      if (response.ok) {
+        localStorage.setItem('token', data.access_token);
+        console.log(data.message);
+        // Redirect to the user page
+      } else {
+        console.log(data.message);
+      }
     } catch (error) {
       console.error('Error:', error);
     }

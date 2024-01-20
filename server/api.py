@@ -1,11 +1,10 @@
 from typing import Any
-from flask import Blueprint, session, request, jsonify, flash
-from paint.server.common import saveEntryToDatabase
+from flask import Blueprint, request, jsonify
+from paint.server.common import saveEntryToDatabase, db
 from paint.server.seats import all_seats
 from datetime import datetime, timedelta
 
 api = Blueprint("api", __name__, url_prefix="/api")
-
 
 @api.route("/repertuar", methods=["GET"])
 def home() -> Any:
@@ -125,74 +124,6 @@ def payment() -> Any:
     return {
         "success": True,
     }
-
-
-# @api.route("/login", methods=["POST"])
-# def login() -> Any:
-#    username, password = request.form["username"], request.form["password"]
-
-#    if session.get("user") is None and username == password == "dev":
-#        session["user"] = username
-#        return {"success": True}
-#    else:
-#        return {"success": False}
-
-
-def login() -> Any:
-    try:
-        username = request.form["username"]
-        password = request.form["password"]
-
-        # czy pola nie są puste
-        if not username or not password:
-            raise ValueError("Puste pole użytkownika lub hasła")
-
-        # sprawdzenie poprawności wprowadzonych danych
-        if session.get("user") is None and username == password == "dev":
-            session["user"] = username
-            return jsonify({"success": True})
-        else:
-            raise ValueError("Niepoprawne dane logowania")
-
-    except KeyError as e:
-        # brak pola w formularzu
-        return jsonify({"error": f"Brak wymaganego pola: {str(e)}"}), 400
-
-    except ValueError as e:
-        # niepoprawne dane
-        flash(str(e), category="error")
-        return jsonify({"error": str(e)}), 401
-
-
-@api.route("/sign-up", methods=["GET", "POST"])
-def sign_up():
-    if request.method == "POST":
-        email = request.form.get("email")
-        first_name = request.form.get("firstName")
-        password1 = request.form.get("password1")
-        password2 = request.form.get("password2")
-
-        if len(email) < 4 or "@" not in email:
-            flash("Wrong Email!", category="error")
-        elif len(first_name) < 2:
-            flash("First name is too short", category="error")
-        elif password1 != password2:
-            flash("Password don't match!", category="error")
-        else:
-            # tu bedzie wprowadzanie danych do bazy po udanej rejestracji
-            return redirect(url_for(""))
-
-        # Do dokończenia
-
-
-@api.route("/logout", methods=["POST"])
-def logout() -> Any:
-    if session.get("user") is not None in session:
-        session["user"] = None
-        return {"success": True}
-    else:
-        return {"success": False}
-
 
 @api.route("/user/<int:id>", methods=["GET", "POST"])
 def user(id: int) -> Any:

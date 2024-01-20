@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
+
 
 
 class Bilet(db.Model):
@@ -22,19 +25,19 @@ class Bilet(db.Model):
         self.telefon = telefon
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    imie = db.Column(db.String(50), nullable=False)
-    nazwisko = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    telefon = db.Column(db.String(50), nullable=True)
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     imie = db.Column(db.String(50), nullable=False)
+#     nazwisko = db.Column(db.String(50), nullable=False)
+#     email = db.Column(db.String(50), nullable=False)
+#     telefon = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, id, imie, nazwisko, email, telefon):
-        self.id = id
-        self.imie = imie
-        self.nazwisko = nazwisko
-        self.email = email
-        self.telefon = telefon
+#     def __init__(self, id, imie, nazwisko, email, telefon):
+#         self.id = id
+#         self.imie = imie
+#         self.nazwisko = nazwisko
+#         self.email = email
+#         self.telefon = telefon
 
 
 class Miejsce(db.Model):
