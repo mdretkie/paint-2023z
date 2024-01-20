@@ -1,15 +1,17 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function Logowanie() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:8080/api/login', {
+      const response = await fetch('http://127.0.0.1:8080/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -17,7 +19,13 @@ export default function Logowanie() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      localStorage.setItem('token', data.access_token);
+      if (response.ok) {
+        localStorage.setItem('token', data.access_token);
+        router.push('/user');
+        console.log(data.message);
+      } else {
+        console.log(data.message);
+      }
     } catch (error) {
       console.error('Error:', error);
     }

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useFormState } from '../providers/FormContext';
+import { useLogInState } from '../providers/LogInContext';
 
 export function LogInButton() {
   return (
@@ -9,6 +10,23 @@ export function LogInButton() {
     >
       Logowanie
     </Link>
+  );
+}
+
+export function LogOutButton() {
+  const { setIsLoggedIn } = useLogInState();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
+  return (
+    <button
+      className="px-4 py-3 bg-zinc-800 rounded-md font-medium text-white mb-6 md:mb-0"
+      onClick={handleLogout}
+    >
+      Wyloguj
+    </button>
   );
 }
 

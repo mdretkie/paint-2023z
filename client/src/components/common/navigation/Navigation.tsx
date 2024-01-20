@@ -3,16 +3,19 @@
 import { useSearchParams } from 'next/navigation';
 import Logo from '../Logo';
 import NavigationLink from './NavigationLink';
-import { LogInButton } from '../buttons';
+import { LogInButton, LogOutButton } from '../buttons';
 import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
+import { useLogInState } from '@/components/providers/LogInContext';
 
 const links = ['Repertuar', 'Cennik'];
 
 export default function Navigation() {
   const searchParams = useSearchParams();
   const showSidebar = searchParams.get('sidebar') === 'true';
+  const { isLoggedIn } = useLogInState();
+
   return (
     <>
       <div className="w-full bg-zinc-900">
@@ -35,7 +38,7 @@ export default function Navigation() {
             <Sidebar links={links} />
           </div>
           <div className="hidden md:block">
-            <LogInButton />
+            {isLoggedIn ? <LogOutButton /> : <LogInButton />}
           </div>
         </div>
       </div>

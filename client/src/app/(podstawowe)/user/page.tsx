@@ -1,20 +1,42 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Heading from '../_components/Heading';
+import { useLogInState } from '@/components/providers/LogInContext';
 
 export default function User() {
-  const film = {
-    id: 1,
-    poster:
-      'https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000',
-    title: 'Chłopi',
-    type: 'obyczajowy',
-    age: '13',
-    duration: '116',
-    production: 'Polska [2024]',
-    availableHours: '11:00, 12:00, 14:00, 16:00, 20:00',
-    dates:
-      '2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26',
-  };
+  const { isLoggedIn, setIsLoggedIn } = useLogInState();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
+    fetch('http://127.0.0.1:8080/auth/is_logged_in', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+        return response.json();
+      })
+      .then((data) => console.log(data))
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
+  }, []);
+
+  if (!isLoggedIn) {
+    return <div className="text-white">Please log in to view this page.</div>;
+  }
 
   return (
     <div className="w-full bg-zinc-900">

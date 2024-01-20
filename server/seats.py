@@ -1,4 +1,4 @@
-#temporary file to store seats data:
+# temporary file to store seats data:
 
 all_seats = [
     {'row': 1, 'number': 1, 'available': False},
