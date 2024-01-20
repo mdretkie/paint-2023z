@@ -1,8 +1,11 @@
 # Jak uruchomić:
 
+## Pobranie repozytorium:
+```
+git clone https://github.com/mdretkie/paint-2023z.git
+```
 ## Backend:
-
-Zakładamy, że znajdujemy się w głównym katalogu repozytorium (`paint-2023z`). Tworzymy i aktywujemy środowisko wirtualne, instalujemy nasz projekt a następnie uruchamiamy.
+Zakładamy, że znajdujemy się w głównym katalogu repozytorium (`paint-2023z`). Tworzymy i aktywujemy środowisko wirtualne
 
 ### Windows
 
@@ -10,7 +13,6 @@ Zakładamy, że znajdujemy się w głównym katalogu repozytorium (`paint-2023z`
 python -m venv .venv
 .venv\Scripts\activate.bat
 pip3 install -e .
-python3 server\server.py
 ```
 
 ### Linux
@@ -19,7 +21,21 @@ python3 server\server.py
 python -m venv .venv
 . .venv/bin/activate
 pip install -e .
-python server/server.py
+```
+
+### Instalacja biblioteki dla bazy danych:
+```
+pip install Flask-SQLAlchemy
+```
+
+### Proces uruchomienia:
+Uruchomienie aplikacji serwera (zakładając, że jesteśmy w katalogu `paint-2023z/server`) - pierwszy terminal:
+```
+python server.py
+```
+Wyświetlenie zawartości bazy danych (zakładając, że jesteśmy w katalogu `paint-2023z/server`) - drugi terminal:
+```
+python sql.py
 ```
 
 
@@ -28,23 +44,15 @@ python server/server.py
 
 2. Przechodzimy do katalogu *Client* i instalujemy pakiety:
 ```
-cd Client
+cd client
 npm install
 ```
 
-3. Uruchamiamy serwer klienta:
+3. Uruchamiamy serwer klienta (zakładając, że jesteśmy w katalogu `paint-2023z/client` - trzeci terminal:
 ```
 npm run dev
 ```
-## Bazy danych
-Pobranie niezbędnej biblioteki:
-```
-pip install Flask-SQLAlchemy
-```
-Wyświetlenie zawartości bazy danych (zakładając, że jesteśmy w katalogu `paint-2023z/server`):
-```
-python sql.py
-```
+
 # Dokumentacja:
 
 Link do Overleafa, jeśli nie chcemy trzymać dokumentacji w repo:  
