@@ -24,6 +24,11 @@ export function useSeats(initialSeatsData: SeatsData) {
   const totalTickets = formData.type.normal + formData.type.reduced;
 
   const handleSeatClick = (rowIndex: number, seatIndex: number) => {
+    if (!seatsData[rowIndex][seatIndex - 1].available) {
+      alert('To miejsce jest niedostępne.');
+      return;
+    }
+
     if (
       totalSelected < totalTickets ||
       seatsData[rowIndex][seatIndex - 1].selected
@@ -54,5 +59,11 @@ export function useSeats(initialSeatsData: SeatsData) {
     }
   };
 
-  return { seatsData, totalTickets, totalSelected, handleSeatClick };
+  return {
+    seatsData,
+    setSeatsData,
+    totalTickets,
+    totalSelected,
+    handleSeatClick,
+  };
 }

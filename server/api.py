@@ -1,8 +1,10 @@
 from typing import Any
 from flask import Blueprint, session, redirect, url_for, request
 from paint.server.common import saveEntryToDatabase
+from paint.server.seats import all_seats
 
 api = Blueprint("api", __name__, url_prefix="/api")
+
 
 @api.route("/home", methods=["GET"])
 def home() -> Any:
@@ -56,19 +58,22 @@ def film(id: int) -> Any:
     }
 
 
-@api.route("/seats", methods=["GET", "POST"])
+@api.route("/seats", methods=["GET", "PUT"])
 def seats() -> Any:
+    unavailable_seats = [seat for seat in all_seats if not seat['available']]
     match request.method:
         case "GET":
-            return [1, 2, 3, 4]
-        case "POST":
-            return [1, 2, 3, 4]
+            return unavailable_seats
+        case "PUT":
+            selected_seats = request.get_json()
+            selected_seats = [{**seat, 'available': not seat['available']} for seat in selected_seats]
+            return {"success": selected_seats}
 
 
 @api.route("/buyer-data", methods=["POST"])
 def buyer_data() -> Any:
-    data = {k: request.form.get(k) 
-            for k in ["imię", "nazwisko", "e-mail", "telefon"]}
+    data = {k: request.form.get(k)
+            for k in ["imię", "nazwisko", "e-mail", "telefon"]}  # TODO: remove
     data1 = request.get_json()
     saveEntryToDatabase(data1)
 
@@ -116,12 +121,12 @@ def user(id: int) -> Any:
                 "telefon-mail": "...",
             }
         case "POST":
-            data = {k: request.form.get(k) 
+            data = {k: request.form.get(k)
                     for k in ["imię", "nazwisko", "e-mail", "telefon"]}
 
 
 @api.route("/filmy", methods=["POST"])
 def filmy() -> Any:
-    data = {k: request.form.get(k) 
+    data = {k: request.form.get(k)
             for k in ["plakat", "tytuł", "typ", "minimalny wiek", "czas trwania", "produkcja", "dostępne godziny seansów"]}
     return {}

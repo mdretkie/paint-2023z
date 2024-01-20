@@ -6,10 +6,17 @@ import Screen from './_components/Screen';
 import SeatsSelectionInfo from './_components/SeatSelectionInfo';
 import { useSeats } from './_components/hooks/useSeats';
 import { useFormState } from '@/components/providers/FormContext';
+import { useEffect } from 'react';
 
 export default function Seats() {
   const { formData, handleNext } = useFormState();
-  const { seatsData, totalTickets, totalSelected, handleSeatClick } = useSeats({
+  const {
+    seatsData,
+    setSeatsData,
+    totalTickets,
+    totalSelected,
+    handleSeatClick,
+  } = useSeats({
     1: [
       { number: 1, available: false, selected: false },
       { number: 2, available: false, selected: false },
@@ -62,8 +69,36 @@ export default function Seats() {
     ],
   });
 
+  useEffect(() => {
+    fetch('http://127.0.0.1:8080/api/seats')
+      .then((response) => response.json())
+      .then((unavailableSeats) => {
+        const newSeatsData = { ...seatsData };
+        unavailableSeats.forEach((seat: any) => {
+          newSeatsData[seat.row][seat.number - 1].available = false;
+        });
+        setSeatsData(newSeatsData);
+      })
+      .catch((error) => console.error('Error:', error));
+  }, []);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const seatsJson = JSON.stringify(formData.seats);
+
+    fetch('http://127.0.0.1:8080/api/seats', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: seatsJson,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response:', data);
+      })
+      .catch((error) => console.error('Error:', error));
+
     handleNext();
   };
 
