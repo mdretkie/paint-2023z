@@ -7,29 +7,33 @@ export default function Cennik() {
         <div>
           <Heading>Cennik</Heading>
           <table className="w-full border-collapse text-zinc-50">
-            <tr className="border-b border-white">
-              <th className="border-r border-white py-8"></th>
-              <th className="border-r border-white bg-zinc-800">2D</th>
-              <th>3D</th>
-            </tr>
-            <tr className="border-b border-white ">
-              <td className="text-center border-r border-white py-8">
-                Bilet ulgowy
-              </td>
-              <td className="text-center border-r border-white text-2xl bg-zinc-800">
-                19,90 zł
-              </td>
-              <td className="text-center text-2xl ">23,80 zł</td>
-            </tr>
-            <tr>
-              <td className="text-center border-r border-white py-8 ">
-                Bilet normalny
-              </td>
-              <td className="text-center border-r border-white text-2xl bg-zinc-800">
-                24,90 zł
-              </td>
-              <td className="text-center text-2xl">28,80 zł</td>
-            </tr>
+            <thead>
+              <tr className="border-b border-white">
+                <th className="border-r border-white py-8"></th>
+                <th className="border-r border-white bg-zinc-800">2D</th>
+                <th>3D</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-white ">
+                <td className="text-center border-r border-white py-8">
+                  Bilet ulgowy
+                </td>
+                <td className="text-center border-r border-white text-2xl bg-zinc-800">
+                  19,90 zł
+                </td>
+                <td className="text-center text-2xl ">23,80 zł</td>
+              </tr>
+              <tr>
+                <td className="text-center border-r border-white py-8 ">
+                  Bilet normalny
+                </td>
+                <td className="text-center border-r border-white text-2xl bg-zinc-800">
+                  24,90 zł
+                </td>
+                <td className="text-center text-2xl">28,80 zł</td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <div className="text-zinc-200 text-xs">

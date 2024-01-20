@@ -27,9 +27,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} ${black_han_sans.variable}`}>
+      <body
+        className={`${roboto.className} ${black_han_sans.variable} h-[100dvh] bg-zinc-900 flex flex-col`}
+      >
         <Navigation />
-        {children}
+        <div className="flex-1">{children}</div>
         <Footer />
       </body>
     </html>
