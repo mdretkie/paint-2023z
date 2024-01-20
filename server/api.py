@@ -101,10 +101,8 @@ def seats() -> Any:
 
 @api.route("/buyer-data", methods=["POST"])
 def buyer_data() -> Any:
-    data = {k: request.form.get(k)
-            for k in ["imię", "nazwisko", "e-mail", "telefon"]}  # TODO: remove
-    data1 = request.get_json()
-    saveEntryToDatabase(data1)
+    data = request.get_json()
+    saveEntryToDatabase(data)
 
     return {
         "success": True,

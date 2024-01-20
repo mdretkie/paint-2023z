@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 export default function Movies({ selectedDate }: { selectedDate: Date }) {
   const [films, setFilms] = useState([]);
-  const date = new Date().toLocaleDateString('pl-PL');
+  let [date, setDate] = useState(new Date().toLocaleDateString('pl-PL'));
 
   useEffect(() => {
     fetch(
@@ -16,6 +16,9 @@ export default function Movies({ selectedDate }: { selectedDate: Date }) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        if (date != selectedDate.toLocaleDateString('pl-PL')) {
+          setDate(selectedDate.toLocaleDateString('pl-PL'));
+        }
         setFilms(data);
       });
   }, [selectedDate]);
