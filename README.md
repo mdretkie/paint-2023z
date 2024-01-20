@@ -48,7 +48,7 @@ cd client
 npm install
 ```
 
-3. Uruchamiamy serwer klienta (zakładając, że jesteśmy w katalogu `paint-2023z/client` - trzeci terminal:
+3. Uruchamiamy serwer klienta (zakładając, że jesteśmy w katalogu `paint-2023z/client`) - trzeci terminal:
 ```
 npm run dev
 ```
