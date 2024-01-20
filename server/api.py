@@ -127,15 +127,41 @@ def payment() -> Any:
     }
 
 
-@api.route("/login", methods=["POST"])
-def login() -> Any:
-    username, password = request.form["username"], request.form["password"]
+# @api.route("/login", methods=["POST"])
+# def login() -> Any:
+#    username, password = request.form["username"], request.form["password"]
 
-    if session.get("user") is None and username == password == "dev":
-        session["user"] = username
-        return {"success": True}
-    else:
-        return {"success": False}
+#    if session.get("user") is None and username == password == "dev":
+#        session["user"] = username
+#        return {"success": True}
+#    else:
+#        return {"success": False}
+
+
+def login() -> Any:
+    try:
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # czy pola nie są puste
+        if not username or not password:
+            raise ValueError("Puste pole użytkownika lub hasła")
+
+        # sprawdzenie poprawności wprowadzonych danych
+        if session.get("user") is None and username == password == "dev":
+            session["user"] = username
+            return jsonify({"success": True})
+        else:
+            raise ValueError("Niepoprawne dane logowania")
+
+    except KeyError as e:
+        # brak pola w formularzu
+        return jsonify({"error": f"Brak wymaganego pola: {str(e)}"}), 400
+
+    except ValueError as e:
+        # niepoprawne dane
+        flash(str(e), category="error")
+        return jsonify({"error": str(e)}), 401
 
 
 @api.route("/sign-up", methods=["GET", "POST"])
