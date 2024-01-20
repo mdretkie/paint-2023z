@@ -24,9 +24,9 @@ export default function SelectedTickets() {
       ref={scrollRef}
       className="bg-zinc-700 rounded p-8 flex flex-col gap-4 mt-6 flex-1 overflow-auto scroll-smooth"
     >
-      {formData.seats?.map((seat: Seat) => {
+      {formData.seats?.map((seat: Seat, index: number) => {
         return (
-          <div className="flex justify-between">
+          <div className="flex justify-between" key={index}>
             <div key={seat.number}>
               Rząd {seat.row}, Miejsce {seat.number}
             </div>

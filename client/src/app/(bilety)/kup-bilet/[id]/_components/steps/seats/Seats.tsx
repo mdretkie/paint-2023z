@@ -69,7 +69,7 @@ export default function Seats() {
 
   return (
     <div className="text-zinc-50 h-full flex flex-col">
-      <div className="text-3xl font-bold">Wybierz rodzaj biletów</div>
+      <div className="text-3xl font-bold">Wybierz miejsca</div>
       <SeatsSelectionInfo total={totalTickets} selected={totalSelected} />
       <form
         onSubmit={handleSubmit}

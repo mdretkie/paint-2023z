@@ -18,7 +18,7 @@ const countSelected = (seatsData: SeatsData) => {
 };
 
 export function useSeats(initialSeatsData: SeatsData) {
-  const { formData, setFormData } = useFormState();
+  const { formData, setFormData, saveForm } = useFormState();
   let [seatsData, setSeatsData] = useState(initialSeatsData);
   let [totalSelected, setTotalSelected] = useState(countSelected(seatsData));
   const totalTickets = formData.type.normal + formData.type.reduced;
@@ -48,6 +48,7 @@ export function useSeats(initialSeatsData: SeatsData) {
       };
 
       setFormData(updatedSeats);
+      saveForm(updatedSeats);
     } else {
       alert('Wszystkie miejsca zostały wybrane.');
     }

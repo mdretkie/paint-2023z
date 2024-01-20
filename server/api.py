@@ -1,11 +1,8 @@
 from typing import Any
 from flask import Blueprint, session, redirect, url_for, request
-from flask_cors import CORS
-from paint.server.common import Bilet, saveEntryToDatabase
-
+from paint.server.common import saveEntryToDatabase
 
 api = Blueprint("api", __name__, url_prefix="/api")
-# CORS(api)
 
 @api.route("/home", methods=["GET"])
 def home() -> Any:
