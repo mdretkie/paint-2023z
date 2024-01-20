@@ -2,6 +2,7 @@ from typing import Any
 from flask import Blueprint, session, request, jsonify
 from paint.server.common import saveEntryToDatabase
 from paint.server.seats import all_seats
+from datetime import datetime, timedelta
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -10,24 +11,34 @@ api = Blueprint("api", __name__, url_prefix="/api")
 def home() -> Any:
     films = [{
         "id": 1,
-        "poster": "...",
+        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
         "title": "Chłopi",
-        "type": "...",
-        "age": "...",
-        "duration": "...",
-        "production": "...",
-        "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
-    }, {
-        "id": 2,
-        "poster": "...",
-        "title": "Chłopi 2",
-        "type": "...",
-        "age": "...",
-        "duration": "...",
-        "production": "...",
-        "availableHours": "12:00, 14:00, 16:00, 18:00, 20:00",
+        "type": "obyczajowy",
+        "age": "13",
+        "duration": "116",
+        "production": "Polska [2024]",
+        "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
+        "dates": "2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26"
     }]
     return jsonify(films)
+
+@api.route("/repertuar/<string:date>", methods=["GET"])
+def films(date: str) -> Any:
+    films = [{
+        "id": 1,
+        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+        "title": "Chłopi",
+        "type": "obyczajowy",
+        "age": "13",
+        "duration": "116",
+        "production": "Polska [2024]",
+        "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
+        "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26"
+    },]
+
+    films_with_date = [film for film in films if date in film["dates"].split(", ")]
+
+    return jsonify(films_with_date)
 
 
 @api.route("/cennik", methods=["GET"])
@@ -44,28 +55,36 @@ def cennik() -> Any:
 def film(id: int) -> Any:
     films = [{
         "id": 1,
-        "poster": "...",
+        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
         "title": "Chłopi",
-        "type": "...",
-        "age": "...",
-        "duration": "...",
-        "production": "...",
+        "type": "obyczajowy",
+        "age": "13",
+        "duration": "116",
+        "production": "Polska [2024]",
         "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+        "dates": get_dates(),
     }, {
         "id": 2,
-        "poster": "...",
-        "title": "Chłopi 2",
-        "type": "...",
-        "age": "...",
-        "duration": "...",
-        "production": "...",
-        "availableHours": "12:00, 14:00, 16:00, 18:00, 20:00",
+        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+        "title": "Chłopi",
+        "type": "obyczajowy",
+        "age": "13",
+        "duration": "116",
+        "production": "Polska[2024]",
+        "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+        "dates": get_dates(),
     }]
     for film in films:
         if film["id"] == id:
             return jsonify(film)
     
     return jsonify({"error": "Film not found"})
+
+def get_dates() -> str:
+    today = datetime.now().date()
+    dates = [today + timedelta(days=i) for i in range(7)]
+    dates_str = ", ".join([date.strftime("%Y-%m-%d") for date in dates])
+    return dates_str
 
 
 @api.route("/seats", methods=["GET", "PUT"])

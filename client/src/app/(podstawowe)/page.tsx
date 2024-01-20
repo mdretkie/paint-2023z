@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Carousel from './_components/Carousel';
 import Heading from './_components/Heading';
-import Films from './_components/Films';
+import CompactMovies from './_components/CompactMovies';
 
 export default function Home() {
   const currentDate = new Date().toLocaleDateString('pl-PL');
@@ -26,7 +26,7 @@ export default function Home() {
             </span>
             <span className="text-zinc-50">Dziś - {currentDate}</span>
           </div>
-          <Films />
+          <CompactMovies />
         </div>
       </div>
     </div>

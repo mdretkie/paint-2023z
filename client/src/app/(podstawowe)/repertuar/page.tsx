@@ -1,10 +1,44 @@
-import Link from 'next/link';
+'use client';
+
+import { use, useEffect, useState } from 'react';
+import Calendar from '../_components/Calendar';
+import Heading from '../_components/Heading';
+import Movies from '../_components/Movies';
 
 export default function Repertuar() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const currentDate = new Date().toLocaleDateString('pl-PL');
+
+  useEffect(() => {
+    console.log(selectedDate);
+  }, [selectedDate]);
+
   return (
-    <>
-      <h1>Repertuar</h1>
-      <Link href="/kup-bilet/1?date=2024-01-07T17-30">Film</Link>
-    </>
+    <div className="bg-zinc-900 pt-8">
+      <div className="w-full bg-zinc-900">
+        <div className="max-w-[1040px] m-auto px-4 md:px-8">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <Heading>Repertuar</Heading>
+              <div className="flex gap-1 items-center">
+                <span className="material-symbols-outlined text-zinc-50">
+                  calendar_today
+                </span>
+                <span className="text-zinc-50">
+                  {selectedDate.toLocaleDateString('pl-PL') === currentDate
+                    ? `Dziś - ${currentDate}`
+                    : selectedDate.toLocaleDateString('pl-PL')}
+                </span>
+              </div>
+            </div>
+            <Calendar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
+          </div>
+          <Movies selectedDate={selectedDate} />
+        </div>
+      </div>
+    </div>
   );
 }
