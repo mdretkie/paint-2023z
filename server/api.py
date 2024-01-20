@@ -1,5 +1,5 @@
 from typing import Any
-from flask import Blueprint, session, request, jsonify
+from flask import Blueprint, session, request, jsonify, flash
 from paint.server.common import saveEntryToDatabase
 from paint.server.seats import all_seats
 from datetime import datetime, timedelta
@@ -9,32 +9,37 @@ api = Blueprint("api", __name__, url_prefix="/api")
 
 @api.route("/repertuar", methods=["GET"])
 def home() -> Any:
-    films = [{
-        "id": 1,
-        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-        "title": "Chłopi",
-        "type": "obyczajowy",
-        "age": "13",
-        "duration": "116",
-        "production": "Polska [2024]",
-        "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
-        "dates": "2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26"
-    }]
+    films = [
+        {
+            "id": 1,
+            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+            "title": "Chłopi",
+            "type": "obyczajowy",
+            "age": "13",
+            "duration": "116",
+            "production": "Polska [2024]",
+            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
+            "dates": "2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
+        }
+    ]
     return jsonify(films)
+
 
 @api.route("/repertuar/<string:date>", methods=["GET"])
 def films(date: str) -> Any:
-    films = [{
-        "id": 1,
-        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-        "title": "Chłopi",
-        "type": "obyczajowy",
-        "age": "13",
-        "duration": "116",
-        "production": "Polska [2024]",
-        "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
-        "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26"
-    },]
+    films = [
+        {
+            "id": 1,
+            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+            "title": "Chłopi",
+            "type": "obyczajowy",
+            "age": "13",
+            "duration": "116",
+            "production": "Polska [2024]",
+            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
+            "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
+        },
+    ]
 
     films_with_date = [film for film in films if date in film["dates"].split(", ")]
 
@@ -53,32 +58,36 @@ def cennik() -> Any:
 
 @api.route("/film/<int:id>", methods=["GET"])
 def film(id: int) -> Any:
-    films = [{
-        "id": 1,
-        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-        "title": "Chłopi",
-        "type": "obyczajowy",
-        "age": "13",
-        "duration": "116",
-        "production": "Polska [2024]",
-        "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
-        "dates": get_dates(),
-    }, {
-        "id": 2,
-        "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-        "title": "Chłopi",
-        "type": "obyczajowy",
-        "age": "13",
-        "duration": "116",
-        "production": "Polska[2024]",
-        "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
-        "dates": get_dates(),
-    }]
+    films = [
+        {
+            "id": 1,
+            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+            "title": "Chłopi",
+            "type": "obyczajowy",
+            "age": "13",
+            "duration": "116",
+            "production": "Polska [2024]",
+            "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+            "dates": get_dates(),
+        },
+        {
+            "id": 2,
+            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+            "title": "Chłopi",
+            "type": "obyczajowy",
+            "age": "13",
+            "duration": "116",
+            "production": "Polska[2024]",
+            "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+            "dates": get_dates(),
+        },
+    ]
     for film in films:
         if film["id"] == id:
             return jsonify(film)
-    
+
     return jsonify({"error": "Film not found"})
+
 
 def get_dates() -> str:
     today = datetime.now().date()
@@ -89,13 +98,15 @@ def get_dates() -> str:
 
 @api.route("/seats", methods=["GET", "PUT"])
 def seats() -> Any:
-    unavailable_seats = [seat for seat in all_seats if not seat['available']]
+    unavailable_seats = [seat for seat in all_seats if not seat["available"]]
     match request.method:
         case "GET":
             return unavailable_seats
         case "PUT":
             selected_seats = request.get_json()
-            selected_seats = [{**seat, 'available': not seat['available']} for seat in selected_seats]
+            selected_seats = [
+                {**seat, "available": not seat["available"]} for seat in selected_seats
+            ]
             return {"success": selected_seats}
 
 
@@ -127,6 +138,27 @@ def login() -> Any:
         return {"success": False}
 
 
+@api.route("/sign-up", methods=["GET", "POST"])
+def sign_up():
+    if request.method == "POST":
+        email = request.form.get("email")
+        first_name = request.form.get("firstName")
+        password1 = request.form.get("password1")
+        password2 = request.form.get("password2")
+
+        if len(email) < 4 or "@" not in email:
+            flash("Wrong Email!", category="error")
+        elif len(first_name) < 2:
+            flash("First name is too short", category="error")
+        elif password1 != password2:
+            flash("Password don't match!", category="error")
+        else:
+            # tu bedzie wprowadzanie danych do bazy po udanej rejestracji
+            return redirect(url_for(""))
+
+        # Do dokończenia
+
+
 @api.route("/logout", methods=["POST"])
 def logout() -> Any:
     if session.get("user") is not None in session:
@@ -148,12 +180,24 @@ def user(id: int) -> Any:
                 "telefon-mail": "...",
             }
         case "POST":
-            data = {k: request.form.get(k)
-                    for k in ["imię", "nazwisko", "e-mail", "telefon"]}
+            data = {
+                k: request.form.get(k)
+                for k in ["imię", "nazwisko", "e-mail", "telefon"]
+            }
 
 
 @api.route("/filmy", methods=["POST"])
 def filmy() -> Any:
-    data = {k: request.form.get(k)
-            for k in ["plakat", "tytuł", "typ", "minimalny wiek", "czas trwania", "produkcja", "dostępne godziny seansów"]}
+    data = {
+        k: request.form.get(k)
+        for k in [
+            "plakat",
+            "tytuł",
+            "typ",
+            "minimalny wiek",
+            "czas trwania",
+            "produkcja",
+            "dostępne godziny seansów",
+        ]
+    }
     return {}
