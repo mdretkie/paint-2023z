@@ -83,7 +83,7 @@ const PersonalDataForm = ({
 );
 
 export default function PersonalData() {
-  const { formData, setFormData, handleNext } = useFormState();
+  const { formData, setFormData, handleNext, saveForm } = useFormState();
 
   const initialValues = {
     firstName: formData.firstName,
@@ -94,6 +94,7 @@ export default function PersonalData() {
 
   const handleSubmit = (values: any) => {
     setFormData({ ...formData, ...values });
+    saveForm({ ...formData, ...values });
     handleNext();
   };
 

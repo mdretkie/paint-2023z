@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useFormState } from '@/components/providers/FormContext';
 import { cn } from '@/components/utils/utils';
 import { SubmitButton } from '@/components/common/buttons';
+import { get } from 'http';
 
 interface TicketInputProps {
   type: string;
@@ -11,13 +12,20 @@ interface TicketInputProps {
 }
 
 export default function TicketsType() {
-  const { formData, setFormData, handleNext } = useFormState();
-  const [reducedTicketNumber, setReducedTicketNumber] = useState(
-    formData.type.reduced
-  );
-  const [normalTicketNumber, setNormalTicketNumber] = useState(
-    formData.type.normal
-  );
+  const {
+    formData,
+    setFormData,
+    handleNext,
+    saveForm,
+    getFormFromLocalStorage,
+  } = useFormState();
+  const [reducedTicketNumber, setReducedTicketNumber] = useState(0);
+  const [normalTicketNumber, setNormalTicketNumber] = useState(0);
+
+  useEffect(() => {
+    setReducedTicketNumber(getFormFromLocalStorage()?.type?.reduced || 0);
+    setNormalTicketNumber(getFormFromLocalStorage()?.type?.normal || 0);
+  }, []);
 
   const updateTicketNumber = (type: string, increment: number) => {
     if (type === 'normalny') {
@@ -39,6 +47,8 @@ export default function TicketsType() {
     };
 
     setFormData(updatedFormData);
+    saveForm(updatedFormData);
+
     handleNext();
   };
 

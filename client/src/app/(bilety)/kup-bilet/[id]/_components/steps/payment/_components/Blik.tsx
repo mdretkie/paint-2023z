@@ -3,6 +3,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useFormState } from '@/components/providers/FormContext';
+import { clear } from 'console';
 
 const BlikSchema = Yup.object().shape({
   blikCode: Yup.string()
@@ -11,7 +12,8 @@ const BlikSchema = Yup.object().shape({
 });
 
 export default function Blik() {
-  const { formData, setFormData, handleNext } = useFormState();
+  const { formData, setFormData, handleNext, clearLocalStorage } =
+    useFormState();
   const formik = useFormik({
     initialValues: {
       blikCode: '',
@@ -62,6 +64,7 @@ export default function Blik() {
           });
 
         handleNext();
+        clearLocalStorage();
       }
     },
   });
