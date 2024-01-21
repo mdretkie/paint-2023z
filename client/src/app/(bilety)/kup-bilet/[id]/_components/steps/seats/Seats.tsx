@@ -7,8 +7,12 @@ import SeatsSelectionInfo from './_components/SeatSelectionInfo';
 import { useSeats } from './_components/hooks/useSeats';
 import { useFormState } from '@/components/providers/FormContext';
 import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { number } from 'yup';
 
 export default function Seats() {
+  const params = useSearchParams();
+  const screeningId = params.get('seans');
   const { formData, handleNext } = useFormState();
   const {
     seatsData,
@@ -18,8 +22,8 @@ export default function Seats() {
     handleSeatClick,
   } = useSeats({
     1: [
-      { number: 1, available: false, selected: false },
-      { number: 2, available: false, selected: false },
+      { number: 1, available: true, selected: false },
+      { number: 2, available: true, selected: false },
       { number: 3, available: true, selected: false },
       { number: 4, available: true, selected: false },
       { number: 5, available: true, selected: false },
@@ -70,12 +74,13 @@ export default function Seats() {
   });
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8080/api/seats')
+    fetch(`http://127.0.0.1:8080/api/seats/${screeningId}`)
       .then((response) => response.json())
-      .then((unavailableSeats) => {
+      .then((data) => {
+        const unavailableSeats = data.unavailable_seats;
         const newSeatsData = { ...seatsData };
-        unavailableSeats.forEach((seat: any) => {
-          newSeatsData[seat.row][seat.number - 1].available = false;
+        unavailableSeats.map((seat: any) => {
+          newSeatsData[seat.rzad][seat.numer - 1].available = false;
         });
         setSeatsData(newSeatsData);
       })
@@ -84,20 +89,29 @@ export default function Seats() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const seatsJson = JSON.stringify(formData.seats);
-
-    fetch('http://127.0.0.1:8080/api/seats', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: seatsJson,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Response:', data);
-      })
-      .catch((error) => console.error('Error:', error));
+    formData.seats.map(
+      (seat: {
+        available: boolean;
+        number: number;
+        row: string;
+        selected: boolean;
+      }) => {
+        fetch(
+          `http://127.0.0.1:8080/api/seats/${screeningId}/${seat.row}/${seat.number}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.info(data);
+          })
+          .catch((error) => console.error('Error:', error));
+      }
+    );
 
     handleNext();
   };

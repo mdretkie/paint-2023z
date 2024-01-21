@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuthState } from '@/components/providers/AuthContext';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -22,7 +23,6 @@ export default function Logowanie() {
       if (response.ok) {
         localStorage.setItem('token', data.access_token);
         router.push('/user');
-        console.log(data.message);
       } else {
         console.log(data.message);
       }

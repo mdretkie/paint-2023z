@@ -7,14 +7,15 @@ import { LogInButton, LogOutButton } from '../buttons';
 import { cn } from '../../utils/utils';
 import SidebarButton from './SidebarButton';
 import Sidebar from './Sidebar';
-import { useLogInState } from '@/components/providers/LogInContext';
+import { useAuthState } from '@/components/providers/AuthContext';
+import Link from 'next/link';
 
 const links = ['Repertuar', 'Cennik'];
 
 export default function Navigation() {
   const searchParams = useSearchParams();
   const showSidebar = searchParams.get('sidebar') === 'true';
-  const { isLoggedIn } = useLogInState();
+  const { isLoggedIn, userData } = useAuthState();
 
   return (
     <>
@@ -37,8 +38,23 @@ export default function Navigation() {
           <div className="md:hidden">
             <Sidebar links={links} />
           </div>
-          <div className="hidden md:block">
-            {isLoggedIn ? <LogOutButton /> : <LogInButton />}
+          <div className="hidden md:block min-w-fit">
+            {isLoggedIn ? (
+              <div className="flex items-center gap-4">
+                <div className="text-zinc-50 min-w-fit">
+                  Zalogowany,{' '}
+                  <Link
+                    href="/user"
+                    className="text-orange-400 hover:underline"
+                  >
+                    {userData.username}
+                  </Link>
+                </div>
+                <LogOutButton />
+              </div>
+            ) : (
+              <LogInButton />
+            )}
           </div>
         </div>
       </div>

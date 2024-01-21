@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Carousel from './_components/Carousel';
+import { CarouselComponent } from './_components/Carousel';
 import Heading from './_components/Heading';
 import CompactMovies from './_components/CompactMovies';
 
@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div className="bg-zinc-900">
-      <Carousel />
+      <CarouselComponent />
       <div className="w-full bg-zinc-900 mt-8">
         <div className="max-w-[1040px] m-auto px-4 md:px-8">
           <div className="flex justify-between items-center">

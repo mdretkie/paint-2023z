@@ -20,9 +20,8 @@ export default function buyTicket({
           <Summary date={date} id={params.id} />
         </Container>
         <Container>
-          <ActiveStep />
+          <ActiveStep id={params.id} />
         </Container>
-        d
       </div>
     </div>
   );

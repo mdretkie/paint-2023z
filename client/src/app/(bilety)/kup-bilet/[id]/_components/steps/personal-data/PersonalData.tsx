@@ -3,6 +3,8 @@ import Title from '../../Title';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useFormState } from '@/components/providers/FormContext';
+import { useState } from 'react';
+import { useAuthState } from '@/components/providers/AuthContext';
 
 interface FieldWithErrorProps {
   label: string;
@@ -84,13 +86,14 @@ const PersonalDataForm = ({
 
 export default function PersonalData() {
   const { formData, setFormData, handleNext, saveForm } = useFormState();
+  const { userData } = useAuthState();
 
-  const initialValues = {
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    phone: formData.phone,
-  };
+  const [initialValues, setInitialValues] = useState({
+    firstName: userData.name || formData.firstName,
+    lastName: userData.surname || formData.lastName,
+    email: userData.email || formData.email,
+    phone: userData.phone || formData.phone,
+  });
 
   const handleSubmit = (values: any) => {
     setFormData({ ...formData, ...values });

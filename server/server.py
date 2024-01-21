@@ -4,7 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 from api import api
 from auth import init_app as init_auth_app
-from common import db
+from common import db, populate_db
 
 
 app = Flask(__name__)
@@ -23,6 +23,7 @@ def runBeforeServer():
     with app.app_context():
         # db.drop_all()
         db.create_all()
+        # populate_db()
 
 
 if __name__ == "__main__":

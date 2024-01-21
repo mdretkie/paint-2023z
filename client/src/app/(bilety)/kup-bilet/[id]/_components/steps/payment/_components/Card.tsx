@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { BackButton, SubmitButton } from '@/components/common/buttons';
 import { useFormState } from '@/components/providers/FormContext';
 
-export default function Card() {
+export default function Card({ handlePayment }: { handlePayment: () => void }) {
   const { formData, setFormData, handleNext } = useFormState();
   const formik = useFormik({
     initialValues: {
@@ -23,7 +23,7 @@ export default function Card() {
         .required('Wymagane')
         .matches(/^\d{3}$/, 'Nieprawidłowy numer'),
     }),
-    onSubmit: (values) => {
+    onSubmit: () => {
       const draw = Math.random();
       const confirmation = confirm('Czy na pewno chcesz zapłacić?');
 
@@ -32,7 +32,7 @@ export default function Card() {
         alert('Niepowodzenie płatności. Spróbuj ponownie.');
       } else if (confirmation) {
         console.log('Płatność przebiegła pomyślnie');
-        handleNext();
+        handlePayment();
       }
     },
   });

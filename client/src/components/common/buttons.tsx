@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useFormState } from '../providers/FormContext';
-import { useLogInState } from '../providers/LogInContext';
+import { useAuthState } from '../providers/AuthContext';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export function LogInButton() {
   return (
@@ -14,11 +15,16 @@ export function LogInButton() {
 }
 
 export function LogOutButton() {
-  const { setIsLoggedIn } = useLogInState();
+  const { setIsLoggedIn } = useAuthState();
+  const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('logged_in_as');
+    localStorage.removeItem('is_logged_in');
     setIsLoggedIn(false);
+    router.push('/');
+    alert('Wylogowano pomyślnie');
   };
   return (
     <button
@@ -49,10 +55,13 @@ export function SubmitButton({
 }
 
 export function BackButton({ text }: { text: string }) {
+  const params = useSearchParams();
+  const screeningId = params.get('seans');
   const { formData, handleBack } = useFormState();
   const { step } = useFormState();
   return (
     <button
+      type="button"
       className="px-4 py-3 bg-zinc-800 rounded-md font-medium text-zinc-200 mb-6 md:mb-0 hover:text-zinc-50 "
       onClick={() => {
         let confirmation;
@@ -61,22 +70,33 @@ export function BackButton({ text }: { text: string }) {
             'Powrtót od poprzedniego kroku spowoduje utratę wybranych miejsc. Czy na pewno chcesz wrócić?'
           );
 
-          const seatsJson = JSON.stringify(formData.seats);
+          if (!confirmation && confirmation != null) return;
 
-          fetch('http://127.0.0.1:8080/api/seats', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: seatsJson,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('Response:', data);
-            })
-            .catch((error) => console.error('Error:', error));
+          formData.seats.map(
+            (seat: {
+              available: boolean;
+              number: number;
+              row: string;
+              selected: boolean;
+            }) => {
+              fetch(
+                `http://127.0.0.1:8080/api/seats/${screeningId}/${seat.row}/${seat.number}`,
+                {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                }
+              )
+                .then((response) => response.json())
+                .then((data) => {
+                  console.info(data);
+                })
+                .catch((error) => console.error('Error:', error));
+            }
+          );
+          handleBack();
         }
-        if (!confirmation && confirmation != null) return;
         handleBack();
       }}
     >

@@ -4,7 +4,7 @@ import 'material-symbols';
 import '../globals.css';
 import Navigation from '@/components/common/navigation/Navigation';
 import Footer from '@/components/common/footer/Footer';
-import { LogInProvider } from '@/components/providers/LogInContext';
+import { AuthProvider } from '@/components/providers/AuthContext';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -31,11 +31,11 @@ export default function RootLayout({
       <body
         className={`${roboto.className} ${black_han_sans.variable} h-[100dvh] bg-zinc-900 flex flex-col`}
       >
-        <LogInProvider>
+        <AuthProvider>
           <Navigation />
           <div className="flex-1">{children}</div>
           <Footer />
-        </LogInProvider>
+        </AuthProvider>
       </body>
     </html>
   );
