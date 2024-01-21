@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Heading from '../_components/Heading';
-import { useLogInState } from '@/components/providers/LogInContext';
+import { useAuthState } from '@/components/providers/AuthContext';
+import Link from 'next/link';
 
 export default function User() {
-  const { isLoggedIn, setIsLoggedIn } = useLogInState();
+  const { isLoggedIn, setIsLoggedIn, setUserData } = useAuthState();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,14 +29,32 @@ export default function User() {
         }
         return response.json();
       })
-      .then((data) => console.log(data))
+      .then((data) => {
+        localStorage.setItem(
+          'logged_in_as',
+          JSON.stringify(data['logged_in_as'])
+        );
+        setUserData(data['logged_in_as']);
+        localStorage.setItem('is_logged_in', JSON.stringify(true));
+      })
       .catch((error) => {
         console.error('There was an error!', error);
       });
   }, []);
 
   if (!isLoggedIn) {
-    return <div className="text-white">Please log in to view this page.</div>;
+    return (
+      <div className="w-full bg-zinc-900">
+        <div className="max-w-[1040px] m-auto px-4 md:px-8">
+          <div className="text-white">
+            <Link href="/logowanie" className="hover:underline">
+              Zaloguj się
+            </Link>
+            , aby wyświetlić tę stronę.
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

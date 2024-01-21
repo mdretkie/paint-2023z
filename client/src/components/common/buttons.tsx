@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useFormState } from '../providers/FormContext';
-import { useLogInState } from '../providers/LogInContext';
+import { useAuthState } from '../providers/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export function LogInButton() {
   return (
@@ -14,11 +15,16 @@ export function LogInButton() {
 }
 
 export function LogOutButton() {
-  const { setIsLoggedIn } = useLogInState();
+  const { setIsLoggedIn } = useAuthState();
+  const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('logged_in_as');
+    localStorage.removeItem('is_logged_in');
     setIsLoggedIn(false);
+    router.push('/');
+    alert('Wylogowano pomyślnie');
   };
   return (
     <button

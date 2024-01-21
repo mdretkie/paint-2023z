@@ -3,6 +3,7 @@ import { Roboto, Black_Han_Sans } from 'next/font/google';
 import 'material-symbols';
 import '../globals.css';
 import { FormProvider } from '@/components/providers/FormContext';
+import { AuthProvider } from '@/components/providers/AuthContext';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${roboto.className} ${black_han_sans.variable} bg-zinc-900 h-full`}
       >
-        <FormProvider>{children}</FormProvider>
+        <AuthProvider>
+          <FormProvider>{children}</FormProvider>
+        </AuthProvider>
       </body>
     </html>
   );

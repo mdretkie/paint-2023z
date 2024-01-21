@@ -21,7 +21,13 @@ def login():
     data = request.get_json()
     user = User.query.filter_by(username=data["username"]).first()
     if user and user.check_password(data["password"]):
-        access_token = create_access_token(identity=user.username)
+        access_token = create_access_token(identity={
+        'username': user.username,
+        'name': user.name,
+        'surname': user.surname,
+        'phone': user.phone,
+        'email': user.email
+    })
         return jsonify(access_token=access_token), 200
     return jsonify({"message": "invalid username or password"}), 401
 
@@ -36,7 +42,13 @@ def is_logged_in():
 @auth.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-    user = User(username=data["username"])
+    user = User(
+        name=data["name"],
+        surname=data["surname"],
+        email=data["email"],
+        phone=data.get("phone"),
+        username=data["username"]
+    )
     user.set_password(data["password"])
     db.session.add(user)
     db.session.commit()
