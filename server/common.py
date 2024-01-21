@@ -1,3 +1,4 @@
+import json
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -6,36 +7,13 @@ db = SQLAlchemy()
 
 class Bilet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    rodzaj_biletu = db.Column(db.String(50), nullable=False)
+    tytul_filmu = db.Column(db.String(50), nullable=False)
+    data = db.Column(db.String(50), nullable=False)
+    godzina = db.Column(db.String(50), nullable=False)
     miejsce = db.Column(db.String(50), nullable=False)
-    imie = db.Column(db.String(50), nullable=False)
-    nazwisko = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    telefon = db.Column(db.String(50), nullable=True)
+    rodzaj_biletu = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, id, rodzaj_biletu, miejsce, imie, nazwisko, email, telefon):
-        self.id = id
-        self.rodzaj_biletu = rodzaj_biletu
-        self.miejsce = miejsce
-        self.imie = imie
-        self.nazwisko = nazwisko
-        self.email = email
-        self.telefon = telefon
-
-
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     imie = db.Column(db.String(50), nullable=False)
-#     nazwisko = db.Column(db.String(50), nullable=False)
-#     email = db.Column(db.String(50), nullable=False)
-#     telefon = db.Column(db.String(50), nullable=True)
-
-#     def __init__(self, id, imie, nazwisko, email, telefon):
-#         self.id = id
-#         self.imie = imie
-#         self.nazwisko = nazwisko
-#         self.email = email
-#         self.telefon = telefon
 
 class User(db.Model):
     __tablename__ = "users"
@@ -46,6 +24,7 @@ class User(db.Model):
     phone = db.Column(db.String(50), nullable=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    tickets = db.relationship('Bilet', backref='user', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -54,60 +33,109 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Miejsce(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    rzad = db.Column(db.Integer, nullable=False)
-    numer_miejsca = db.Column(db.Integer, nullable=False)
-    czy_dostepne = db.Column(db.Boolean, nullable=False)
-
-    def __init__(self, id, rzad, numer_miejsca, czy_dostepne):
-        self.id = id
-        self.rzad = rzad
-        self.numer_miejsca = numer_miejsca
-        self.czy_dostepne = czy_dostepne
-
-
 class Film(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    poster = db.Column(db.String(255), nullable=False)
+    plakat = db.Column(db.String(255), nullable=False)
     tytul = db.Column(db.String(50), nullable=False)
     gatunek = db.Column(db.String(50), nullable=False)
     wiek = db.Column(db.String(50), nullable=False)
     czas_trwania = db.Column(db.String(50), nullable=False)
     rok_produkcji = db.Column(db.String(50), nullable=False)
-    dostepne_godziny = db.Column(db.String(255), nullable=False)
     daty = db.Column(db.String(255), nullable=False)
+    seanse = db.relationship('Seans', backref='film', lazy=True)
 
-    def __init__(
-        self,
-        id,
-        poster,
-        tytul,
-        gatunek,
-        wiek,
-        czas_trwania,
-        rok_produkcji,
-        dostepne_godziny,
-        daty,
-    ):
-        self.id = id
-        self.poster = poster
-        self.tytul = tytul
-        self.gatunek = gatunek
-        self.wiek = wiek
-        self.czas_trwania = czas_trwania
-        self.rok_produkcji = rok_produkcji
-        self.dostepne_godziny = dostepne_godziny
-        self.daty = daty
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'plakat': self.plakat,
+            'tytul': self.tytul,
+            'gatunek': self.gatunek,
+            'wiek': self.wiek,
+            'czas_trwania': self.czas_trwania,
+            'rok_produkcji': self.rok_produkcji,
+            'daty': self.daty,
+            'seanse': [{"id": seans.id, "godzina": seans.godzina} for seans in self.seanse]
+        }
 
+class Seans(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    id_filmu = db.Column(db.Integer, db.ForeignKey('film.id'))
+    godzina = db.Column(db.String(50), nullable=False)
+    miejsca = db.relationship('Miejsce', backref='seans', lazy=True)
 
-def saveEntryToDatabase(data) -> None:
-    rodzaj_biletu = data["rodzaj_biletu"]
-    miejsce = data["miejsce"]
-    imie = data["imie"]
-    nazwisko = data["nazwisko"]
-    email = data["email"]
-    telefon = data["telefon"]
-    new_user = Bilet(rodzaj_biletu, miejsce, imie, nazwisko, email, telefon)
-    db.session.add(new_user)
+class Miejsce(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rzad = db.Column(db.Integer, nullable=False)
+    numer = db.Column(db.Integer, nullable=False)
+    czy_dostepne = db.Column(db.Boolean, nullable=False)
+    id_seansu = db.Column(db.Integer, db.ForeignKey('seans.id'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'rzad': self.rzad,
+            'numer': self.numer,
+            'czy_dostepne': self.czy_dostepne,
+            'id_seansu': self.id_seansu
+        }
+
+# def saveEntryToDatabase(data) -> None:
+#     rodzaj_biletu = data["rodzaj_biletu"]
+#     miejsce = data["miejsce"]
+#     imie = data["imie"]
+#     nazwisko = data["nazwisko"]
+#     email = data["email"]
+#     telefon = data["telefon"]
+#     new_user = Bilet(rodzaj_biletu, miejsce, imie, nazwisko, email, telefon)
+#     db.session.add(new_user)
+#     db.session.commit()
+
+def populate_db():
+    admin = User(name="admin", surname="admin", email="admin@admin.com", username="admin", password_hash=generate_password_hash("admin"))
+    db.session.add(admin)
+    db.session.flush()
+
+    user = User(name="user", surname="user", email="user@user.com", username="user", password_hash=generate_password_hash("user"))
+    db.session.add(user)
+    db.session.flush()
+
+    bilet = Bilet(tytul_filmu="Chłopi", data="2024-01-21", godzina="17:00", miejsce="I4", rodzaj_biletu="ulgowy", user_id=user.id)
+    db.session.add(bilet)
+    db.session.flush()
+
+    with open('server/movies.json') as f:
+        data = json.load(f)
+        films = data['movies']
+
+    with open('server/seats.json') as f:
+        data = json.load(f)
+        seats = data['seats']
+
+    for film_data in films:
+        film = Film(
+            plakat=film_data["poster"],
+            tytul=film_data["title"],
+            gatunek=film_data["type"],
+            wiek=film_data["age"],
+            czas_trwania=film_data["duration"],
+            rok_produkcji=film_data["production"],
+            daty=film_data["dates"],
+        )
+        db.session.add(film)
+        db.session.flush()
+
+        for hour in film_data["screenings"].split(", "):
+            screening = Seans(id_filmu=film.id, godzina=hour)
+            db.session.add(screening)
+            db.session.flush()
+
+            for seat_data in seats:
+                seat = Miejsce(
+                    rzad=seat_data['row'],
+                    numer=seat_data['number'],
+                    czy_dostepne=seat_data['available'],
+                    id_seansu=screening.id
+                )
+                db.session.add(seat)
+
     db.session.commit()

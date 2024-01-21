@@ -1,13 +1,13 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from '../_components/Calendar';
 import Heading from '../_components/Heading';
 import Movies from '../_components/Movies';
 
 export default function Repertuar() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const currentDate = new Date().toLocaleDateString('pl-PL');
+  const currentDate = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     console.log(selectedDate);
@@ -25,7 +25,7 @@ export default function Repertuar() {
                   calendar_today
                 </span>
                 <span className="text-zinc-50">
-                  {selectedDate.toLocaleDateString('pl-PL') === currentDate
+                  {selectedDate.toISOString() === currentDate
                     ? `Dziś - ${currentDate}`
                     : selectedDate.toLocaleDateString('pl-PL')}
                 </span>

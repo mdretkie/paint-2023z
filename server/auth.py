@@ -5,7 +5,7 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
 )
-from common import db, User
+from common import db, User, Bilet
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 jwt = JWTManager()
@@ -53,3 +53,16 @@ def register():
     db.session.add(user)
     db.session.commit()
     return jsonify({"message": "registered successfully"}), 200
+
+@auth.route("/tickets", methods=["GET"])
+@jwt_required()
+def get_user_tickets():
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    tickets = Bilet.query.filter_by(user_id=user.id).all()
+
+    return jsonify({"tickets": [ticket.to_dict() for ticket in tickets]}), 200

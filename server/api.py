@@ -1,162 +1,28 @@
+import random
 from typing import Any
 from flask import Blueprint, request, jsonify
-from datetime import datetime, timedelta
-from common import saveEntryToDatabase
-from seats import all_seats
+from common import db, Seans, Miejsce, Film, Bilet
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
 
 @api.route("/repertuar", methods=["GET"])
 def home() -> Any:
-    films = [
-        {
-            "id": 1,
-            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-            "title": "Chłopi",
-            "type": "obyczajowy",
-            "age": "13",
-            "duration": "116",
-            "production": "Polska [2024]",
-            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
-            "dates": "2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
-        },
-        {
-            "id": 2,
-            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-            "title": "Chłopi",
-            "type": "obyczajowy",
-            "age": "13",
-            "duration": "116",
-            "production": "Polska [2024]",
-            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
-            "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
-        },
-        {
-            "id": 3,
-            "poster": "https://example.com/oppenheimer_poster.jpg",
-            "title": "Oppenheimer",
-            "type": "drama",
-            "age": "18",
-            "duration": "150",
-            "production": "USA [2024]",
-            "availableHours": "13:00, 15:30, 18:00, 21:00",
-            "dates": "2024-01-20, 2024-01-22, 2024-01-25, 2024-01-27, 2024-01-29",
-        },
-        {
-            "id": 4,
-            "poster": "https://example.com/spiderman_poster.jpg",
-            "title": "Spider-Man: Across the Spider-Verse",
-            "type": "action",
-            "age": "PG-13",
-            "duration": "120",
-            "production": "USA [2024]",
-            "availableHours": "10:30, 14:00, 17:30, 20:30",
-            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
-        },
-        {
-            "id": 5,
-            "poster": "https://example.com/inception_poster.jpg",
-            "title": "Inception",
-            "type": "sci-fi",
-            "age": "PG-13",
-            "duration": "148",
-            "production": "USA [2010]",
-            "availableHours": "12:00, 15:00, 18:30, 21:30",
-            "dates": "2024-01-20, 2024-01-23, 2024-01-25, 2024-01-27, 2024-01-29",
-        },
-        {
-            "id": 6,
-            "poster": "https://example.com/cars_poster.jpg",
-            "title": "Cars",
-            "type": "animation",
-            "age": "G",
-            "duration": "117",
-            "production": "USA [2006]",
-            "availableHours": "11:30, 14:30, 17:00, 19:30",
-            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
-        },
-    ]
-    return jsonify(films)
+    all_films = Film.query.all()
+    all_films = [film.to_dict() for film in all_films]
+    return jsonify(all_films)
 
 
 @api.route("/repertuar/<string:date>", methods=["GET"])
-def films(date: str) -> Any:
-    films = [
-        {
-            "id": 1,
-            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-            "title": "Chłopi",
-            "type": "obyczajowy",
-            "age": "13",
-            "duration": "116",
-            "production": "Polska [2024]",
-            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
-            "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
-        },
-        {
-            "id": 2,
-            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-            "title": "Chłopi",
-            "type": "obyczajowy",
-            "age": "13",
-            "duration": "116",
-            "production": "Polska [2024]",
-            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
-            "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
-        },
-        {
-            "id": 3,
-            "poster": "https://example.com/oppenheimer_poster.jpg",
-            "title": "Oppenheimer",
-            "type": "drama",
-            "age": "18",
-            "duration": "150",
-            "production": "USA [2024]",
-            "availableHours": "13:00, 15:30, 18:00, 21:00",
-            "dates": "2024-01-20, 2024-01-22, 2024-01-25, 2024-01-27, 2024-01-29",
-        },
-        {
-            "id": 4,
-            "poster": "https://example.com/spiderman_poster.jpg",
-            "title": "Spider-Man: Across the Spider-Verse",
-            "type": "action",
-            "age": "PG-13",
-            "duration": "120",
-            "production": "USA [2024]",
-            "availableHours": "10:30, 14:00, 17:30, 20:30",
-            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
-        },
-        {
-            "id": 5,
-            "poster": "https://example.com/inception_poster.jpg",
-            "title": "Inception",
-            "type": "sci-fi",
-            "age": "PG-13",
-            "duration": "148",
-            "production": "USA [2010]",
-            "availableHours": "12:00, 15:00, 18:30, 21:30",
-            "dates": "2024-01-20, 2024-01-23, 2024-01-25, 2024-01-27, 2024-01-29",
-        },
-        {
-            "id": 6,
-            "poster": "https://example.com/cars_poster.jpg",
-            "title": "Cars",
-            "type": "animation",
-            "age": "G",
-            "duration": "117",
-            "production": "USA [2006]",
-            "availableHours": "11:30, 14:30, 17:00, 19:30",
-            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
-        },
-    ]
+def films(date: str):
+    all_films = Film.query.all()
+    all_films = [film.to_dict() for film in all_films]
+    date_films = [film for film in all_films if date in film["daty"].split(", ")]
 
-    films_with_date = [film for film in films if date in film["dates"].split(", ")]
-
-    return jsonify(films_with_date)
+    return jsonify(date_films)
 
 
-@api.route("/cennik", methods=["GET"])
+@api.route("/cennik", methods=["GET"]) # TODO: change
 def cennik() -> Any:
     return {
         "ulgowy 2d": 10,
@@ -168,110 +34,68 @@ def cennik() -> Any:
 
 @api.route("/film/<int:id>", methods=["GET"])
 def film(id: int) -> Any:
-    films = [
-        {
-            "id": 1,
-            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-            "title": "Chłopi",
-            "type": "obyczajowy",
-            "age": "13",
-            "duration": "116",
-            "production": "Polska [2024]",
-            "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
-            "dates": get_dates(),
-        },
-        {
-            "id": 2,
-            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
-            "title": "Chłopi",
-            "type": "obyczajowy",
-            "age": "13",
-            "duration": "116",
-            "production": "Polska[2024]",
-            "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
-            "dates": get_dates(),
-        },
-        {
-            "id": 3,
-            "poster": "https://example.com/oppenheimer_poster.jpg",
-            "title": "Oppenheimer",
-            "type": "drama",
-            "age": "18",
-            "duration": "150",
-            "production": "USA [2024]",
-            "availableHours": "13:00, 15:30, 18:00, 21:00",
-            "dates": get_dates(),
-        },
-        {
-            "id": 4,
-            "poster": "https://example.com/spiderman_poster.jpg",
-            "title": "Spider-Man: Across the Spider-Verse",
-            "type": "action",
-            "age": "PG-13",
-            "duration": "120",
-            "production": "USA [2024]",
-            "availableHours": "10:30, 14:00, 17:30, 20:30",
-            "dates": get_dates(),
-        },
-        {
-            "id": 5,
-            "poster": "https://example.com/inception_poster.jpg",
-            "title": "Inception",
-            "type": "sci-fi",
-            "age": "PG-13",
-            "duration": "148",
-            "production": "USA [2010]",
-            "availableHours": "12:00, 15:00, 18:30, 21:30",
-            "dates": get_dates(),
-        },
-        {
-            "id": 6,
-            "poster": "https://example.com/cars_poster.jpg",
-            "title": "Cars",
-            "type": "animation",
-            "age": "G",
-            "duration": "117",
-            "production": "USA [2006]",
-            "availableHours": "11:30, 14:30, 17:00, 19:30",
-            "dates": get_dates(),
-        },
-    ]
-    for film in films:
-        if film["id"] == id:
-            return jsonify(film)
+    film = Film.query.get(id)
+
+    if film is not None:
+        return jsonify(film.to_dict())
 
     return jsonify({"error": "Film not found"})
 
 
-def get_dates() -> str:
-    today = datetime.now().date()
-    dates = [today + timedelta(days=i) for i in range(7)]
-    dates_str = ", ".join([date.strftime("%Y-%m-%d") for date in dates])
-    return dates_str
+@api.route("/seats/<int:screening_id>", methods=["GET", "PUT"])
+def seats(screening_id) -> Any:
+    screening = Seans.query.get(screening_id)
+    if not screening:
+        return {"error": "Screening not found"}, 404
+
+    if request.method == "GET":
+        unavailable_seats = Miejsce.query.filter_by(id_seansu=screening_id, czy_dostepne=False).all()
+        return {"unavailable_seats": [seat.to_dict() for seat in unavailable_seats]}
+
+    elif request.method == "PUT":
+        selected_seats = request.get_json()
+        for seat_id in selected_seats:
+            seat = Miejsce.query.get(seat_id)
+            if seat and seat.id_seansu == screening_id:
+                seat.czy_dostepne = not seat.czy_dostepne
+        db.session.commit()
+        return {"success": "Seats updated"}
 
 
-@api.route("/seats", methods=["GET", "PUT"])
-def seats() -> Any:
-    unavailable_seats = [seat for seat in all_seats if not seat["available"]]
-    match request.method:
-        case "GET":
-            return unavailable_seats
-        case "PUT":
-            selected_seats = request.get_json()
-            selected_seats = [
-                {**seat, "available": not seat["available"]} for seat in selected_seats
-            ]
-            return {"success": selected_seats}
-
-
-@api.route("/buyer-data", methods=["POST"])
-def buyer_data() -> Any:
+@api.route("/seats/<int:screening_id>/<string:seat_row>/<int:seat_number>", methods=["PUT"])
+def update_seat(screening_id: int, seat_row: str, seat_number: int) -> Any:
+    seat = Miejsce.query.filter_by(id_seansu=screening_id, rzad=seat_row, numer=seat_number).first()
+    if seat:
+        seat.czy_dostepne = not seat.czy_dostepne
+        db.session.commit()
+        return {"success": "Seat updated"}
+    else:
+        return {"error": "Seat not found"}
+    
+@api.route("/ticket", methods=["POST"])
+def create_ticket() -> Any:
     data = request.get_json()
-    saveEntryToDatabase(data)
 
-    return {
-        "success": True,
-    }
+    # Get the user ID from the data, or generate a random multi-digit number if it's not provided
+    user_id = data.get('user_id', random.randint(1000, 9999))
+
+    # Create a new Bilet object
+    ticket = Bilet(
+        tytul_filmu=data['tytul_filmu'],
+        data=data['data'],
+        godzina=data['godzina'],
+        miejsce=data['miejsce'],
+        rodzaj_biletu=data['rodzaj_biletu'],
+        user_id=user_id
+    )
+
+    # Add the new ticket to the session and commit it
+    db.session.add(ticket)
+    db.session.commit()
+
+    # Return a success message
+    return {"success": "Ticket created", "ticket_id": ticket.id}
+
 
 
 @api.route("/payment", methods=["POST"])
@@ -279,38 +103,3 @@ def payment() -> Any:
     return {
         "success": True,
     }
-
-
-@api.route("/user/<int:id>", methods=["GET", "POST"])
-def user(id: int) -> Any:
-    match request.method:
-        case "GET":
-            return {
-                "imię": "...",
-                "nazwisko": "...",
-                "lista kupionych biletów": "...",
-                "e-mail": "...",
-                "telefon-mail": "...",
-            }
-        case "POST":
-            data = {
-                k: request.form.get(k)
-                for k in ["imię", "nazwisko", "e-mail", "telefon"]
-            }
-
-
-@api.route("/filmy", methods=["POST"])
-def filmy() -> Any:
-    data = {
-        k: request.form.get(k)
-        for k in [
-            "plakat",
-            "tytuł",
-            "typ",
-            "minimalny wiek",
-            "czas trwania",
-            "produkcja",
-            "dostępne godziny seansów",
-        ]
-    }
-    return {}

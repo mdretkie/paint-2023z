@@ -1,0 +1,70 @@
+{
+  "movies": [
+    {
+      "id": 1,
+      "poster": "https://placehold.co/68x96",
+      "title": "Chłopi",
+      "type": "obyczajowy",
+      "age": "13",
+      "duration": "116",
+      "production": "Polska [2024]",
+      "screenings": "11:00, 12:00, 14:00, 16:00, 20:00",
+      "dates": "2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26"
+    },
+    {
+      "id": 2,
+      "poster": "https://placehold.co/68x96",
+      "title": "Chłopi",
+      "type": "obyczajowy",
+      "age": "13",
+      "duration": "116",
+      "production": "Polska [2024]",
+      "screenings": "11:00, 12:00, 14:00, 16:00, 20:00",
+      "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26"
+    },
+    {
+      "id": 3,
+      "poster": "https://placehold.co/68x96",
+      "title": "Oppenheimer",
+      "type": "drama",
+      "age": "18",
+      "duration": "150",
+      "production": "USA [2024]",
+      "screenings": "13:00, 15:30, 18:00, 21:00",
+      "dates": "2024-01-20, 2024-01-22, 2024-01-25, 2024-01-27, 2024-01-29"
+    },
+    {
+      "id": 4,
+      "poster": "https://placehold.co/68x96",
+      "title": "Spider-Man: Across the Spider-Verse",
+      "type": "action",
+      "age": "PG-13",
+      "duration": "120",
+      "production": "USA [2024]",
+      "screenings": "10:30, 14:00, 17:30, 20:30",
+      "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30"
+    },
+    {
+      "id": 5,
+      "poster": "https://placehold.co/68x96",
+      "title": "Inception",
+      "type": "sci-fi",
+      "age": "PG-13",
+      "duration": "148",
+      "production": "USA [2010]",
+      "screenings": "12:00, 15:00, 18:30, 21:30",
+      "dates": "2024-01-20, 2024-01-23, 2024-01-25, 2024-01-27, 2024-01-29"
+    },
+    {
+      "id": 6,
+      "poster": "https://placehold.co/68x96",
+      "title": "Cars",
+      "type": "animation",
+      "age": "G",
+      "duration": "117",
+      "production": "USA [2006]",
+      "screenings": "11:30, 14:30, 17:00, 19:30",
+      "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30"
+    }
+  ]
+}
