@@ -11,7 +11,7 @@ def displayDatabase():
     bilety = session.query(Bilet).all()
 
     for bilet in bilety:
-        print(f"ID:{bilet.id},Rodzaj_biletu:{bilet.rodzaj_biletu},Imię:{bilet.imie},Nazwisko:{bilet.nazwisko},Email:{bilet.email},Telefon:{bilet.telefon}")
+        print(f"ID:{bilet.id},Tytul_filmu:{bilet.tytul_filmu},Data:{bilet.data},Godzina:{bilet.godzina},Miejsce:{bilet.miejsce},Rodzaj_biletu:{bilet.rodzaj_biletu},User_ID:{bilet.user_id}")
 
     session.close()
 
