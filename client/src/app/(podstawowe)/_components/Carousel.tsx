@@ -8,6 +8,7 @@ export function CarouselComponent() {
       <Carousel>
         <img src="image1.webp" alt="..." />
         <img src="image2.webp" alt="..." />
+        <img src="image3.webp" alt="..." />
       </Carousel>
     </div>
   );
