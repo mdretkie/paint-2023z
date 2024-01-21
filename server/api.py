@@ -90,10 +90,3 @@ def create_ticket() -> Any:
     db.session.commit()
 
     return {"success": "Ticket created", "ticket_id": ticket.id}
-
-
-@api.route("/payment", methods=["POST"])
-def payment() -> Any:
-    return {
-        "success": True,
-    }

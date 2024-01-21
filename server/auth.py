@@ -58,7 +58,8 @@ def register():
 @jwt_required()
 def get_user_tickets():
     current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
+    username = current_user['username']
+    user = User.query.filter_by(username=username).first()
 
     if not user:
         return jsonify({"message": "User not found"}), 404

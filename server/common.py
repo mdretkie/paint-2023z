@@ -14,6 +14,17 @@ class Bilet(db.Model):
     rodzaj_biletu = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'tytul_filmu': self.tytul_filmu,
+            'data': self.data,
+            'godzina': self.godzina,
+            'miejsce': self.miejsce,
+            'rodzaj_biletu': self.rodzaj_biletu,
+            'user_id': self.user_id
+        }
+
 
 class User(db.Model):
     __tablename__ = "users"
