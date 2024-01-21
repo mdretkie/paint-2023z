@@ -6,25 +6,39 @@ import React, { useEffect, useState } from 'react';
 export default function AdminMovieList() {
   const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
+  const fetchMovies = () => {
     fetch('http://127.0.0.1:8080/api/repertuar')
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setMovies(data);
       });
+  };
+
+  useEffect(() => {
+    fetchMovies();
   }, []);
 
   const handleDelete = (id: number) => {
-    const confirmation = confirm('Czy na pewno chcesz usunąć ten film?');
+    const confirmation = window.confirm('Czy na pewno chcesz usunąć ten film?');
     if (confirmation) {
-      console.log('usunięto', id);
+      fetch(`http://127.0.0.1:8080/api/film/${id}`, {
+        method: 'DELETE',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            console.log('usunięto', id);
+            fetchMovies();
+          } else {
+            console.error(data.error);
+          }
+        })
+        .catch((error) => console.error('Error:', error));
     } else {
       console.log('anulowano');
     }
   };
-
-  const handleEdit = (id: number) => {};
 
   return (
     <table className="w-full bg-zinc-800">
@@ -45,9 +59,11 @@ export default function AdminMovieList() {
             key={index}
           >
             <TD>{movie.id}</TD>
-            <TD>{movie.title}</TD>
-            <TD>{movie.availableHours}</TD>
-            <TD>{movie.dates}</TD>
+            <TD>{movie.tytul}</TD>
+            <TD>
+              {movie.seanse.map((seans: any) => seans.godzina).join(', ')}
+            </TD>
+            <TD>{movie.daty}</TD>
             <TD>
               <div
                 className="hover:underline cursor-pointer hover:text-red-500"

@@ -34,11 +34,23 @@ def cennik() -> Any:
 
 
 @api.route("/film/<int:id>", methods=["GET"])
-def film(id: int) -> Any:
+def get_film(id: int) -> Any:
     film = Film.query.get(id)
 
     if film is not None:
         return jsonify(film.to_dict())
+
+    return jsonify({"error": "Film not found"})
+
+
+@api.route("/film/<int:id>", methods=["DELETE"])
+def delete_film(id: int) -> Any:
+    film = Film.query.get(id)
+
+    if film is not None:
+        db.session.delete(film)
+        db.session.commit()
+        return jsonify({"success": "Film deleted"})
 
     return jsonify({"error": "Film not found"})
 
