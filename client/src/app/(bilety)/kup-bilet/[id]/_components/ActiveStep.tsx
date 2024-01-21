@@ -7,7 +7,7 @@ import PersonalData from './steps/personal-data/PersonalData';
 import Payment from './steps/payment/Payment';
 import Confirmation from './steps/confirmation/Confirmation';
 
-export default function ActiveStep() {
+export default function ActiveStep({ id }: { id: string }) {
   const { step } = useFormState();
 
   switch (step) {
@@ -18,7 +18,7 @@ export default function ActiveStep() {
     case 3:
       return <PersonalData />;
     case 4:
-      return <Payment />;
+      return <Payment id={id} />;
     case 5:
       return <Confirmation />;
   }

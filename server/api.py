@@ -1,7 +1,7 @@
 import random
 from typing import Any
 from flask import Blueprint, request, jsonify
-from common import db, Seans, Miejsce, Film, Bilet
+from common import db, Seans, Miejsce, Film, Bilet, User
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -17,12 +17,13 @@ def home() -> Any:
 def films(date: str):
     all_films = Film.query.all()
     all_films = [film.to_dict() for film in all_films]
-    date_films = [film for film in all_films if date in film["daty"].split(", ")]
+    date_films = [
+        film for film in all_films if date in film["daty"].split(", ")]
 
     return jsonify(date_films)
 
 
-@api.route("/cennik", methods=["GET"]) # TODO: change
+@api.route("/cennik", methods=["GET"])  # TODO: change
 def cennik() -> Any:
     return {
         "ulgowy 2d": 10,
@@ -42,46 +43,42 @@ def film(id: int) -> Any:
     return jsonify({"error": "Film not found"})
 
 
-@api.route("/seats/<int:screening_id>", methods=["GET", "PUT"])
+@api.route("/seats/<int:screening_id>", methods=["GET"])
 def seats(screening_id) -> Any:
     screening = Seans.query.get(screening_id)
     if not screening:
         return {"error": "Screening not found"}, 404
 
-    if request.method == "GET":
-        unavailable_seats = Miejsce.query.filter_by(id_seansu=screening_id, czy_dostepne=False).all()
-        return {"unavailable_seats": [seat.to_dict() for seat in unavailable_seats]}
-
-    elif request.method == "PUT":
-        selected_seats = request.get_json()
-        for seat_id in selected_seats:
-            seat = Miejsce.query.get(seat_id)
-            if seat and seat.id_seansu == screening_id:
-                seat.czy_dostepne = not seat.czy_dostepne
-        db.session.commit()
-        return {"success": "Seats updated"}
+    unavailable_seats = Miejsce.query.filter_by(
+        id_seansu=screening_id, czy_dostepne=False).all()
+    return jsonify({"unavailable_seats": [seat.to_dict() for seat in unavailable_seats]})
 
 
 @api.route("/seats/<int:screening_id>/<string:seat_row>/<int:seat_number>", methods=["PUT"])
 def update_seat(screening_id: int, seat_row: str, seat_number: int) -> Any:
-    seat = Miejsce.query.filter_by(id_seansu=screening_id, rzad=seat_row, numer=seat_number).first()
+    seat = Miejsce.query.filter_by(
+        id_seansu=screening_id, rzad=seat_row, numer=seat_number).first()
     if seat:
         seat.czy_dostepne = not seat.czy_dostepne
         db.session.commit()
         return {"success": "Seat updated"}
     else:
         return {"error": "Seat not found"}
-    
+
+
 @api.route("/ticket", methods=["POST"])
 def create_ticket() -> Any:
     data = request.get_json()
 
-    # Get the user ID from the data, or generate a random multi-digit number if it's not provided
-    user_id = data.get('user_id', random.randint(1000, 9999))
+    user = User.query.filter_by(name=data['username']).first()
+    user_id = user.id if user else random.randint(1000, 9999)
 
-    # Create a new Bilet object
+    film = Film.query.get(data['film_id'])
+    if film is None:
+        return {"error": "Film not found"}, 404
+
     ticket = Bilet(
-        tytul_filmu=data['tytul_filmu'],
+        tytul_filmu=film.tytul,
         data=data['data'],
         godzina=data['godzina'],
         miejsce=data['miejsce'],
@@ -89,13 +86,10 @@ def create_ticket() -> Any:
         user_id=user_id
     )
 
-    # Add the new ticket to the session and commit it
     db.session.add(ticket)
     db.session.commit()
 
-    # Return a success message
     return {"success": "Ticket created", "ticket_id": ticket.id}
-
 
 
 @api.route("/payment", methods=["POST"])

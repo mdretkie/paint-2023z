@@ -1,8 +1,7 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormState } from '@/components/providers/FormContext';
 import { cn } from '@/components/utils/utils';
 import { SubmitButton } from '@/components/common/buttons';
-import { get } from 'http';
 
 interface TicketInputProps {
   type: string;

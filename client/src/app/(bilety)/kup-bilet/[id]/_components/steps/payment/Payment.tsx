@@ -1,11 +1,59 @@
 import Title from '../../Title';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Blik from './_components/Blik';
 import Card from './_components/Card';
 import { cn } from '@/components/utils/utils';
+import { useFormState } from '@/components/providers/FormContext';
+import { useSearchParams } from 'next/navigation';
+import { useAuthState } from '@/components/providers/AuthContext';
 
-export default function Payment() {
+export default function Payment({ id }: { id: string }) {
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const { formData, handleNext, clearLocalStorage } =
+    useFormState();
+  const { userData } = useAuthState();
+  console.log('userData: ', userData.username);
+  const params = useSearchParams();
+  const date = params.get('date')?.split('T')[0];
+  const time = params.get('date')?.split('T')[1];
+
+  const handlePayment = () => {
+    let reducedCount = 0;
+    let normalCount = 0;
+
+    formData.seats.forEach((seat: any) => {
+      let rodzaj_biletu;
+
+      if (reducedCount < formData.type.reduced) {
+        rodzaj_biletu = 'ulgowy';
+        reducedCount++;
+      } else if (normalCount < formData.type.normal) {
+        rodzaj_biletu = 'normalny';
+        normalCount++;
+      }
+
+      fetch('http://127.0.0.1:8080/api/ticket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          film_id: id,
+          data: date,
+          godzina: time,
+          miejsce: `Rząd: ${seat.row}, Miejsce: ${seat.number}`,
+          rodzaj_biletu: rodzaj_biletu,
+          username: userData.username || null,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log('Ticket created: ', data))
+        .catch((error) => console.error('Error:', error));
+    });
+
+    handleNext();
+    clearLocalStorage();
+  };
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -50,7 +98,11 @@ export default function Payment() {
           </div>
         </div>
       </div>
-      {paymentMethod === 'card' ? <Card /> : <Blik />}
+      {paymentMethod === 'card' ? (
+        <Card handlePayment={handlePayment} />
+      ) : (
+        <Blik handlePayment={handlePayment} />
+      )}
     </div>
   );
 }

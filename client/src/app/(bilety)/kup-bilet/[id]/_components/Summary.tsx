@@ -8,18 +8,14 @@ export default function Summary({ date, id }: { date: string; id: string }) {
   const [movie, setMovie] = useState<any>(null);
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:8080/api/film/${id}`);
-        const data = await response.json();
-        console.log(data);
+    fetch(`http://127.0.0.1:8080/api/film/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
         setMovie(data);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error('Error fetching movie:', error);
-      }
-    };
-
-    fetchMovie();
+      });
   }, [id]);
 
   const year = date.slice(0, 4);
@@ -37,6 +33,7 @@ export default function Summary({ date, id }: { date: string; id: string }) {
       window.location.href = '/repertuar';
     }
   };
+
   return (
     <div className="text-zinc-50 h-full relative flex flex-col">
       <div className="flex items-center gap-4">
@@ -57,10 +54,10 @@ export default function Summary({ date, id }: { date: string; id: string }) {
       <div className="h-px my-6 bg-zinc-600"></div>
       <div>
         <div className="uppercase text-3xl font-bold">
-          {movie ? movie.title : 'Ładowanie...'}
+          {movie ? movie.tytul : 'Ładowanie...'}
         </div>
-        <div className="lowercase text-xl text-zinc-300">
-          {movie ? movie.type : 'Ładowanie...'}
+        <div className="text-zinc-300 text-xl capitalize">
+          {movie ? movie.gatunek : 'Ładowanie...'}
         </div>
       </div>
       <SelectedTickets />
