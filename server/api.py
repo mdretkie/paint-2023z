@@ -1,8 +1,8 @@
 from typing import Any
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timedelta
-from paint.server.common import saveEntryToDatabase
-from paint.server.seats import all_seats
+from common import saveEntryToDatabase
+from seats import all_seats
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -20,7 +20,62 @@ def home() -> Any:
             "production": "Polska [2024]",
             "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
             "dates": "2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
-        }
+        },
+        {
+            "id": 2,
+            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+            "title": "Chłopi",
+            "type": "obyczajowy",
+            "age": "13",
+            "duration": "116",
+            "production": "Polska [2024]",
+            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
+            "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
+        },
+        {
+            "id": 3,
+            "poster": "https://example.com/oppenheimer_poster.jpg",
+            "title": "Oppenheimer",
+            "type": "drama",
+            "age": "18",
+            "duration": "150",
+            "production": "USA [2024]",
+            "availableHours": "13:00, 15:30, 18:00, 21:00",
+            "dates": "2024-01-20, 2024-01-22, 2024-01-25, 2024-01-27, 2024-01-29",
+        },
+        {
+            "id": 4,
+            "poster": "https://example.com/spiderman_poster.jpg",
+            "title": "Spider-Man: Across the Spider-Verse",
+            "type": "action",
+            "age": "PG-13",
+            "duration": "120",
+            "production": "USA [2024]",
+            "availableHours": "10:30, 14:00, 17:30, 20:30",
+            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
+        },
+        {
+            "id": 5,
+            "poster": "https://example.com/inception_poster.jpg",
+            "title": "Inception",
+            "type": "sci-fi",
+            "age": "PG-13",
+            "duration": "148",
+            "production": "USA [2010]",
+            "availableHours": "12:00, 15:00, 18:30, 21:30",
+            "dates": "2024-01-20, 2024-01-23, 2024-01-25, 2024-01-27, 2024-01-29",
+        },
+        {
+            "id": 6,
+            "poster": "https://example.com/cars_poster.jpg",
+            "title": "Cars",
+            "type": "animation",
+            "age": "G",
+            "duration": "117",
+            "production": "USA [2006]",
+            "availableHours": "11:30, 14:30, 17:00, 19:30",
+            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
+        },
     ]
     return jsonify(films)
 
@@ -39,10 +94,64 @@ def films(date: str) -> Any:
             "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
             "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
         },
+        {
+            "id": 2,
+            "poster": "https://creativereview.imgix.net/content/uploads/2023/12/Oppenheimer.jpg?auto=compress,format&q=60&w=1263&h=2000",
+            "title": "Chłopi",
+            "type": "obyczajowy",
+            "age": "13",
+            "duration": "116",
+            "production": "Polska [2024]",
+            "availableHours": "11:00, 12:00, 14:00, 16:00, 20:00",
+            "dates": "2024-01-20, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26",
+        },
+        {
+            "id": 3,
+            "poster": "https://example.com/oppenheimer_poster.jpg",
+            "title": "Oppenheimer",
+            "type": "drama",
+            "age": "18",
+            "duration": "150",
+            "production": "USA [2024]",
+            "availableHours": "13:00, 15:30, 18:00, 21:00",
+            "dates": "2024-01-20, 2024-01-22, 2024-01-25, 2024-01-27, 2024-01-29",
+        },
+        {
+            "id": 4,
+            "poster": "https://example.com/spiderman_poster.jpg",
+            "title": "Spider-Man: Across the Spider-Verse",
+            "type": "action",
+            "age": "PG-13",
+            "duration": "120",
+            "production": "USA [2024]",
+            "availableHours": "10:30, 14:00, 17:30, 20:30",
+            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
+        },
+        {
+            "id": 5,
+            "poster": "https://example.com/inception_poster.jpg",
+            "title": "Inception",
+            "type": "sci-fi",
+            "age": "PG-13",
+            "duration": "148",
+            "production": "USA [2010]",
+            "availableHours": "12:00, 15:00, 18:30, 21:30",
+            "dates": "2024-01-20, 2024-01-23, 2024-01-25, 2024-01-27, 2024-01-29",
+        },
+        {
+            "id": 6,
+            "poster": "https://example.com/cars_poster.jpg",
+            "title": "Cars",
+            "type": "animation",
+            "age": "G",
+            "duration": "117",
+            "production": "USA [2006]",
+            "availableHours": "11:30, 14:30, 17:00, 19:30",
+            "dates": "2024-01-21, 2024-01-24, 2024-01-26, 2024-01-28, 2024-01-30",
+        },
     ]
 
-    films_with_date = [
-        film for film in films if date in film["dates"].split(", ")]
+    films_with_date = [film for film in films if date in film["dates"].split(", ")]
 
     return jsonify(films_with_date)
 
@@ -80,6 +189,50 @@ def film(id: int) -> Any:
             "duration": "116",
             "production": "Polska[2024]",
             "availableHours": "11:00, 12:00, 14:00, 16:00, 18:00, 20:00",
+            "dates": get_dates(),
+        },
+        {
+            "id": 3,
+            "poster": "https://example.com/oppenheimer_poster.jpg",
+            "title": "Oppenheimer",
+            "type": "drama",
+            "age": "18",
+            "duration": "150",
+            "production": "USA [2024]",
+            "availableHours": "13:00, 15:30, 18:00, 21:00",
+            "dates": get_dates(),
+        },
+        {
+            "id": 4,
+            "poster": "https://example.com/spiderman_poster.jpg",
+            "title": "Spider-Man: Across the Spider-Verse",
+            "type": "action",
+            "age": "PG-13",
+            "duration": "120",
+            "production": "USA [2024]",
+            "availableHours": "10:30, 14:00, 17:30, 20:30",
+            "dates": get_dates(),
+        },
+        {
+            "id": 5,
+            "poster": "https://example.com/inception_poster.jpg",
+            "title": "Inception",
+            "type": "sci-fi",
+            "age": "PG-13",
+            "duration": "148",
+            "production": "USA [2010]",
+            "availableHours": "12:00, 15:00, 18:30, 21:30",
+            "dates": get_dates(),
+        },
+        {
+            "id": 6,
+            "poster": "https://example.com/cars_poster.jpg",
+            "title": "Cars",
+            "type": "animation",
+            "age": "G",
+            "duration": "117",
+            "production": "USA [2006]",
+            "availableHours": "11:30, 14:30, 17:00, 19:30",
             "dates": get_dates(),
         },
     ]
