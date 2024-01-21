@@ -8,7 +8,7 @@ setup(
     install_requires=[
         "flask",
         "flask-cors",
-        "lask_jwt_extended",
+        "flask_jwt_extended",
         "flask_sqlalchemy",
     ],
 )
