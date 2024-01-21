@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Roboto, Black_Han_Sans } from 'next/font/google';
+import { Roboto, Russo_One } from 'next/font/google';
 import 'material-symbols';
 import '../globals.css';
 import Navigation from '@/components/common/navigation/Navigation';
@@ -10,7 +10,7 @@ const roboto = Roboto({
   subsets: ['latin'],
   weight: ['100', '300', '400', '500', '700', '900'],
 });
-const black_han_sans = Black_Han_Sans({
+const black_han_sans = Russo_One({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--font-logo',
