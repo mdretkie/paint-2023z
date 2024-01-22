@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuthState } from '@/components/providers/AuthContext';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -61,6 +61,15 @@ export default function Logowanie() {
       >
         Zaloguj się
       </button>
+      <div className="text-zinc-50 mt-8">
+        Nie masz konta?{' '}
+        <Link
+          className="hover:underline text-orange-500 opacity-50 hover:opacity-100 transform-opacity duration-300"
+          href="/rejestracja"
+        >
+          Zarejestruj się
+        </Link>
+      </div>
     </form>
   );
 }
