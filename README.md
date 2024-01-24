@@ -35,7 +35,7 @@ python server.py
 ```
 Wyświetlenie zawartości bazy danych (zakładając, że jesteśmy w katalogu `paint-2023z/server`) - drugi terminal:
 ```
-python sql.py
+python sql.py [ Bilet | Film | User ]
 ```
 
 
