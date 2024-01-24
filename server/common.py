@@ -37,6 +37,17 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     tickets = db.relationship('Bilet', backref='user', lazy=True)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'surname': self.surname,
+            'email': self.email,
+            'phone': self.phone,
+            'username': self.username,
+            'tickets': [{"id": ticket.id, "tytul_filmu": ticket.tytul_filmu, "data": ticket.data, "godzina": ticket.godzina, "miejsce": ticket.miejsce, "rodzaj_biletu": ticket.rodzaj_biletu} for ticket in self.tickets]
+        }
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 

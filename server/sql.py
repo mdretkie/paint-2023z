@@ -1,20 +1,32 @@
+import argparse
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from paint.server.common import Bilet
+from paint.server.common import Bilet, User, Film
 
-
-def displayDatabase():
+def displayDatabase(model):
     engine = create_engine('sqlite:///../instance/example.db')
     Session = sessionmaker(bind=engine)
     session = Session()
-    bilety = session.query(Bilet).all()
 
-    for bilet in bilety:
-        print(f"ID:{bilet.id},Tytul_filmu:{bilet.tytul_filmu},Data:{bilet.data},Godzina:{bilet.godzina},Miejsce:{bilet.miejsce},Rodzaj_biletu:{bilet.rodzaj_biletu},User_ID:{bilet.user_id}")
+    if model == 'Bilet':
+        items = session.query(Bilet).all()
+    elif model == 'User':
+        items = session.query(User).all()
+    elif model == 'Film':
+        items = session.query(Film).all()
+    else:
+        print(f"Nieznany model: {model}")
+        return
+
+    for item in items:
+        print(item.to_dict())
 
     session.close()
 
-
 if __name__ == "__main__":
-    displayDatabase()
+    parser = argparse.ArgumentParser(description='Wyświetl zawartość bazy danych.')
+    parser.add_argument('model', type=str, help='Model do wyświetlenia (Bilet, User, Film)')
+    args = parser.parse_args()
+
+    displayDatabase(args.model)

@@ -4,7 +4,8 @@ from flask import Flask
 from flask_cors import CORS
 from api import api
 from auth import init_app as init_auth_app
-from common import db, populate_db
+from common import db, populate_db, Film
+from sqlalchemy.exc import OperationalError
 
 
 app = Flask(__name__)
@@ -21,9 +22,16 @@ app.register_blueprint(api)
 
 def runBeforeServer():
     with app.app_context():
-        # db.drop_all()
         db.create_all()
-        # populate_db()
+        try:
+            if db.session.query(Film).first() is None:
+                print("Database is empty, populating...")
+                populate_db()
+            else:
+                print("Database already populated")
+        except OperationalError:
+            print("Error occurred, populating database...")
+            populate_db()
 
 
 if __name__ == "__main__":
