@@ -121,7 +121,7 @@ def populate_db():
     db.session.add(user)
     db.session.flush()
 
-    bilet = Bilet(tytul_filmu="Chłopi", data="2024-01-21", godzina="17:00", miejsce="I4", rodzaj_biletu="ulgowy", user_id=user.id)
+    bilet = Bilet(tytul_filmu="Chłopi", data="2024-01-21", godzina="17:00", miejsce="Rząd: 4, Miejsce: 4", rodzaj_biletu="ulgowy", user_id=user.id)
     db.session.add(bilet)
     db.session.flush()
 

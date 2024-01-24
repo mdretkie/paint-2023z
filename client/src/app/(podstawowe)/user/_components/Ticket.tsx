@@ -26,7 +26,7 @@ export default function Ticket({
         <div>
           <div className="font-bold text-xl">{miejsce}</div>
         </div>
-        <div className="text-sm">Cena: {rodzaj_biletu}</div>
+        <div className="text-sm">Rodzaj biletu: {rodzaj_biletu}</div>
       </div>
       <div className="flex items-center bg-zinc-50 w-48 h-48 justify-center rounded-md rounded-l-2xl">
         <img className="w-36 h-auto" src="qr.png" alt="Kod QR" />

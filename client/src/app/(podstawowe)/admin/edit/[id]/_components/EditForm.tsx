@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 export default function EditForm({ id }: { id: string }) {
+  const router = useRouter();
   const [film, setFilm] = useState({
     czas_trwania: '116',
     daty: '2024-01-20, 2024-01-21, 2024-01-22, 2024-01-23, 2024-01-24, 2024-01-25, 2024-01-26',
@@ -45,7 +47,24 @@ export default function EditForm({ id }: { id: string }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(film);
+    fetch(`http://127.0.0.1:8080/auth/film/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(film),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          console.error(data.error);
+        } else {
+          console.log('Film updated successfully');
+          router.push('/admin');
+        }
+      })
+      .catch((error) => console.error('Error:', error));
   };
 
   return (

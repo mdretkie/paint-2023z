@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import Heading from '../../_components/Heading';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Add() {
+  const router = useRouter();
   const [film, setFilm] = useState({
     poster: '',
     title: '',
@@ -25,7 +27,32 @@ export default function Add() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(film);
+    fetch('http://127.0.0.1:8080/auth/film', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // assuming the JWT token is stored in local storage
+      },
+      body: JSON.stringify({
+        plakat: film.poster,
+        tytul: film.title,
+        gatunek: film.type,
+        wiek: film.age,
+        czas_trwania: film.duration,
+        rok_produkcji: film.production,
+        daty: film.dates,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          console.error(data.error);
+        } else {
+          console.log('Film added successfully');
+          router.push('/admin');
+        }
+      })
+      .catch((error) => console.error('Error:', error));
   };
 
   return (
@@ -104,7 +131,7 @@ export default function Add() {
             />
           </Label>
           <Label>
-            Daty:
+            Daty (format: 2021-06-01,2021-06-02...):
             <input
               type="text"
               name="dates"

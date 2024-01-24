@@ -74,7 +74,10 @@ export default function TicketsType() {
         </div>
         <SubmitButton
           text={'Dalej'}
-          disabled={!(reducedTicketNumber + normalTicketNumber > 0)}
+          disabled={
+            !(reducedTicketNumber + normalTicketNumber > 0) ||
+            reducedTicketNumber + normalTicketNumber > 40
+          }
         />
       </form>
     </div>
