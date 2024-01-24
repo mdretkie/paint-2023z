@@ -44,7 +44,7 @@ export default function Navigation() {
                 <div className="text-zinc-50 min-w-fit">
                   Zalogowany,{' '}
                   <Link
-                    href="/user"
+                    href={userData.username === 'admin' ? '/admin' : '/user'}
                     className="text-orange-400 hover:underline"
                   >
                     {userData.username}

@@ -36,6 +36,7 @@ export default function Register() {
         router.push('/logowanie');
       } else {
         console.warn(data.message);
+        alert(data.message);
       }
     } catch (error) {
       console.error('Error:', error);

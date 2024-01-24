@@ -22,9 +22,14 @@ export default function Logowanie() {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.access_token);
-        router.push('/user');
+        if (username === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/user');
+        }
       } else {
         console.log(data.message);
+        alert('Podaj poprawne dane logowania');
       }
     } catch (error) {
       console.error('Error:', error);
